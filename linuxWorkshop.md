@@ -1,5 +1,6 @@
 ---
 title: "Linux Essentials - Part 1"
+sub_title: "Introduction & Foundations 🚀"
 author: "GDG Workshop"
 theme:
   name: gruvbox-dark
@@ -15,460 +16,680 @@ options:
   command_prefix: "cmd"
 ---
 
-# Part 1: Introduction & Foundations 🚀
+<!-- end_slide -->
 
-## Today's Journey
+# Linux Essentials 🐧
 
-**What We'll Cover:**
-1. The Evolution: From Mainframes to Linux
-2. Understanding the Terminology (CLI, Shell, Terminal, GUI)
-3. Kernel Deep Dive
-4. Why Linux is the Best
-5. GNU & The Free Software Movement
-6. Linux Distributions
+## Part 1: Foundations
+
+<!-- pause -->
+
+**Today's Topics:**
+
+<!-- incremental_lists: true -->
+
+1. Quick History: UNIX → GNU → Linux
+2. Understanding the Terms
+3. Why Linux Dominates
+4. GNU & Free Software
+
+<!-- speaker_note:
+60-minute focused workshop
+Keep it concise and practical
+Emphasize key concepts only
+-->
 
 <!-- end_slide -->
 
-# The Beginning 🕰️
-## How It All Started
+# The Evolution ⏱️
 
-## The 1960s: Birth of Computing
+```mermaid
+timeline
+    title From UNIX to Linux
+    1969 : UNIX Born
+         : Bell Labs
+         : Ken Thompson & Dennis Ritchie
+    1983 : GNU Project
+         : Richard Stallman
+         : Free UNIX tools
+    1991 : Linux Kernel
+         : Linus Torvalds
+         : "just a hobby"
+    Today : Linux Everywhere
+          : Servers, Cloud, Android
+          : Powers the Internet
+```
 
-**The Mainframe Era**
-* Computers were room-sized machines
-* Cost millions of dollars
-* Only universities and corporations had access
-* No personal computers existed
-* Operated using punch cards!
-
-**The Problem:** Multiple users needed to share ONE computer.
-
-<!-- end_slide -->
-
-## 1969: UNIX is Born 🌟
-
-**At Bell Labs (AT&T)**
-* Ken Thompson & Dennis Ritchie
-* Created for the PDP-7 minicomputer
-* Revolutionary idea: Time-sharing system
-* Written in C language (portable!)
-
-**UNIX Philosophy:**
-> "Do one thing and do it well"
+<!-- speaker_note:
+30-year journey in one slide
+Each step solved a real problem
+Community-driven development
+-->
 
 <!-- end_slide -->
 
-## UNIX's Key Innovations
+# 1969: UNIX 🌟
 
-**What Made UNIX Special:**
-1. **Multi-user:** Multiple people could use it simultaneously
-2. **Multi-tasking:** Run multiple programs at once
-3. **Portable:** Could run on different hardware
-4. **Hierarchical File System:** The `/` tree structure
-5. **Everything is a file:** Even devices!
+<!-- columns -->
 
-<!-- end_slide -->
+<!-- column: 0.5 -->
 
-## The Problem with UNIX
+**The Innovation:**
+* Multi-user system
+* Multi-tasking
+* Written in C (portable!)
+* Hierarchical file system
 
-**The Catch:**
-* UNIX was **proprietary**
-* Extremely **expensive** (tens of thousands of dollars)
-* Source code was **closed**
-* Required expensive hardware
-* Licensing restrictions were strict
+<!-- column: 0.5 -->
 
-Universities wanted to teach it, but couldn't afford it!
+**The Problem:**
+* Proprietary
+* Very expensive
+* Closed source
+* Universities couldn't afford it
 
-<!-- end_slide -->
+<!-- reset_layout -->
 
-## 1983: The GNU Project 🦬
+<!-- pause -->
 
-**Richard Stallman's Vision**
-* Started the Free Software Foundation
-* Goal: Create a **free** UNIX-like OS
-* GNU = "GNU's Not Unix" (recursive acronym!)
+> "Do one thing and do it well" - UNIX Philosophy
 
-**The Problem:** They built all the tools but... no kernel!
-
-**GNU Created:**
-* GCC (compiler)
-* bash (shell)
-* Core utilities (ls, cp, mv, etc.)
+<!-- speaker_note:
+UNIX was revolutionary but expensive
+$50,000+ for hardware + license
+This created demand for free alternative
+-->
 
 <!-- end_slide -->
 
-## 1987: MINIX Enters
+# 1983: GNU Project 🦬
 
-**Andrew Tanenbaum** created MINIX
-* Teaching tool for operating systems
-* UNIX-like, but simplified
-* Source code available (for education)
+<!-- pause -->
 
-A Finnish student named **Linus Torvalds** was using it...
+**Richard Stallman's Mission:**
+* Create a free UNIX-like system
+* GNU = "GNU's Not Unix"
+
+<!-- pause -->
+
+<!-- columns -->
+
+<!-- column: 0.5 -->
+
+**What GNU Built:**
+* ✅ GCC compiler
+* ✅ bash shell
+* ✅ Core tools (ls, cp, mv)
+* ✅ Text editor (emacs)
+
+<!-- column: 0.5 -->
+
+**What Was Missing:**
+* ❌ **The Kernel**
+
+<!-- reset_layout -->
+
+<!-- speaker_note:
+GNU had everything except the kernel
+This was the missing piece
+Linus would solve this problem
+-->
 
 <!-- end_slide -->
 
-## 1991: Linux is Born! 🐧
+# 1991: Linux is Born! 🎉
 
-**August 25, 1991 - Linus Torvalds posts:**
+**August 25, 1991 - Linus Torvalds:**
 
 > "I'm doing a (free) operating system (just a hobby, won't be big and professional like GNU)"
 
-**What Linus Created:**
-* The **kernel** - the core of the OS
-* Released under GPL (completely free)
-* Invited collaboration from anyone
-* Combined with GNU tools = Complete OS!
+<!-- pause -->
+
+```mermaid
+graph LR
+    A[GNU Tools<br/>No Kernel] + B[Linux Kernel<br/>No Tools] = C[Complete<br/>Free OS!]
+    
+    style A fill:#fff3e0,stroke:#333
+    style B fill:#e3f2fd,stroke:#333
+    style C fill:#c8e6c9,stroke:#333,stroke-width:3px
+```
+
+<!-- pause -->
+
+**The Perfect Match:**
+* Linux provided the kernel
+* GNU provided everything else
+* Together = Full operating system
+
+<!-- speaker_note:
+Most famous understatement in computing!
+Linux + GNU = GNU/Linux (but we say "Linux")
+Now runs the world
+-->
 
 <!-- end_slide -->
+
+<!-- jump_to_middle -->
 
 # Understanding the Terms 📚
-## CLI, Shell, Terminal, GUI
 
 <!-- end_slide -->
 
-## GUI vs CLI
+# GUI vs CLI
 
-**GUI (Graphical User Interface)**
-* Windows, icons, buttons, mouse
-* What you're used to: Windows, macOS
-* Easy to learn, visual feedback
-* Limited automation capabilities
+<!-- columns -->
 
-**CLI (Command Line Interface)**
-* Text-based interaction
-* Type commands, get text output
-* Steeper learning curve
-* Powerful automation & scripting
+<!-- column: 0.5 -->
 
-<!-- end_slide -->
+## GUI
+**Graphical User Interface**
 
-## What is a Terminal? 🖥️
+* Visual: windows, icons
+* Point and click
+* Easy to learn
+* Limited automation
 
-**Historical Context:**
-* Originally a physical device
-* Connected to mainframe computers
-* Had a keyboard and display
-* Multiple terminals → One computer
+<!-- column: 0.5 -->
 
-**Today:**
-* **Terminal Emulator** = Software that mimics old terminals
-* Examples: GNOME Terminal, iTerm2, Windows Terminal
-* Just a window that runs a shell!
+## CLI
+**Command Line Interface**
 
-<!-- end_slide -->
+* Text-based
+* Type commands
+* Steeper learning
+* **Powerful automation**
 
-## What is a Shell? 🐚
+<!-- reset_layout -->
 
-**The Shell is Your Interpreter**
-* Takes your commands (text)
-* Translates them for the kernel
-* Returns the output to you
+<!-- pause -->
 
-**Think of it as:**
-* The shell is the **translator**
-* You speak human → Shell speaks machine
-
-<!-- end_slide -->
-
-## The Relationship 🔗
-
-```text
-┌─────────────────────────────────┐
-│      Terminal Emulator          │  ← The window you see
-│  ┌───────────────────────────┐  │
-│  │        Shell (bash)       │  │  ← Interprets commands
-│  │  ┌─────────────────────┐  │  │
-│  │  │   Your Command      │  │  │  ← What you type
-│  │  └─────────────────────┘  │  │
-│  │           ↓                │  │
-│  │  ┌─────────────────────┐  │  │
-│  │  │    Kernel           │  │  │  ← Executes on hardware
-│  │  └─────────────────────┘  │  │
-│  └───────────────────────────┘  │
-└─────────────────────────────────┘
+```mermaid
+graph LR
+    A[GUI] -->|Good for| B[Visual tasks<br/>Beginners]
+    C[CLI] -->|Good for| D[Automation<br/>Servers<br/>Scripts]
+    
+    style B fill:#9cf,stroke:#333
+    style D fill:#9f9,stroke:#333
 ```
 
-<!-- end_slide -->
-
-## CLI in Action
-
-**Example Workflow:**
-
-1. You open **Terminal** (the app)
-2. **Shell** (bash) starts and waits
-3. You type: `ls -la`
-4. **Shell** interprets this
-5. **Kernel** executes the command
-6. Output returns through Shell to Terminal
-7. You see the result!
+<!-- speaker_note:
+Not either/or - use both!
+GUI for visual work
+CLI for automation and remote access
+-->
 
 <!-- end_slide -->
 
-# Kernel vs Operating System 🧠
-## What's the Difference?
+# Terminal vs Shell
 
-<!-- end_slide -->
+<!-- pause -->
 
-## What is a Kernel? ⚙️
+**Terminal** = The window (app you see)
+* GNOME Terminal, iTerm2, Windows Terminal
+* Just displays input/output
 
-**The Kernel is the CORE**
-* Sits between hardware and software
-* Manages system resources
-* Direct communication with hardware
-* Most privileged software component
+<!-- pause -->
 
-**Key Responsibilities:**
-1. Process management
-2. Memory management
-3. Device drivers
-4. System calls
-5. Security & permissions
+**Shell** = The interpreter (runs inside terminal)
+* bash, zsh, fish
+* Translates your commands for the kernel
 
-<!-- end_slide -->
+<!-- pause -->
 
-## Kernel's Job Explained
-
-**Think of the Kernel as a Restaurant Manager:**
-
-* **Hardware** = Kitchen (CPU, RAM, Disk)
-* **Applications** = Customers (programs)
-* **Kernel** = Manager coordinating everything
-
-**Example:**
-When you open a browser:
-* Kernel allocates RAM
-* Kernel schedules CPU time
-* Kernel handles network access
-* Kernel manages disk I/O
-
-<!-- end_slide -->
-
-## Linux: The Kernel 🐧
-
-**Technically Speaking:**
-* "Linux" is JUST the kernel
-* Created by Linus Torvalds
-* Manages hardware resources
-* ~30 million lines of code!
-
-**But everyone says "Linux OS" because:**
-* Linux kernel + GNU tools = Complete system
-* Common shorthand
-* "GNU/Linux" is technically correct but rarely used
-
-<!-- end_slide -->
-
-## Kernel Architecture
-
-```text
-┌────────────────────────────────────┐
-│      User Space (Applications)     │
-├────────────────────────────────────┤
-│         System Call Interface      │
-├────────────────────────────────────┤
-│                                    │
-│         Linux Kernel               │
-│  ┌──────────┬──────────┬────────┐ │
-│  │ Process  │  Memory  │  File  │ │
-│  │   Mgmt   │   Mgmt   │ System │ │
-│  ├──────────┼──────────┼────────┤ │
-│  │      Device Drivers            │ │
-│  └────────────────────────────────┘ │
-├────────────────────────────────────┤
-│    Hardware (CPU, RAM, Disk, etc)  │
-└────────────────────────────────────┘
+```mermaid
+graph TB
+    A[Terminal Emulator<br/>The window] --> B[Shell bash<br/>The interpreter]
+    B --> C[Kernel<br/>The executor]
+    
+    style A fill:#e3f2fd,stroke:#333
+    style B fill:#fff3e0,stroke:#333
+    style C fill:#f3e5f5,stroke:#333,stroke-width:2px
 ```
 
+<!-- speaker_note:
+Terminal = display layer
+Shell = logic layer
+Often confused but different!
+-->
+
 <!-- end_slide -->
 
-## System Calls: The Bridge 🌉
+# The Complete Flow
 
-**How Programs Talk to Kernel:**
-* Applications can't directly access hardware
-* They make "system calls" to the kernel
+```mermaid
+sequenceDiagram
+    participant You
+    participant Terminal
+    participant Shell
+    participant Kernel
+    participant Hardware
+    
+    You->>Terminal: Type: ls -la
+    Terminal->>Shell: Send command
+    Shell->>Shell: Parse command
+    Shell->>Kernel: System call
+    Kernel->>Hardware: Read disk
+    Hardware-->>Kernel: File list
+    Kernel-->>Shell: Return data
+    Shell-->>Terminal: Format output
+    Terminal-->>You: Display files
+```
+
+<!-- speaker_note:
+This is what happens when you type a command
+Multiple layers working together
+Each has a specific role
+-->
+
+<!-- end_slide -->
+
+# Kernel vs Operating System
+
+<!-- pause -->
+
+**Kernel** = Core of the OS
+* Manages hardware (CPU, RAM, disk)
+* Process scheduling
+* Memory management
+* Device drivers
+
+<!-- pause -->
+
+**Operating System** = Complete system
+* Kernel + Shell + Utilities + Applications
+
+<!-- pause -->
+
+```mermaid
+graph TB
+    subgraph OS["Complete Operating System"]
+        A[Applications<br/>Firefox, vim] --> B[Shell & Tools<br/>bash, ls, cp]
+        B --> C[Kernel<br/>Linux]
+        C --> D[Hardware<br/>CPU, RAM, Disk]
+    end
+    
+    style C fill:#f96,stroke:#333,stroke-width:3px
+```
+
+<!-- speaker_note:
+"Linux" technically = just the kernel
+"Linux OS" = Linux kernel + GNU tools + apps
+Most people just say "Linux"
+-->
+
+<!-- end_slide -->
+
+# Kernel Architecture
+
+```text
+┌──────────────────────────────┐
+│  Applications (User Space)   │  ← Your programs
+├──────────────────────────────┤
+│  System Call Interface       │  ← Gateway
+├──────────────────────────────┤
+│  Linux Kernel:               │
+│  • Process Management        │
+│  • Memory Management         │  ← Core OS
+│  • File Systems              │
+│  • Device Drivers            │
+├──────────────────────────────┤
+│  Hardware                    │  ← CPU, RAM, Disk
+└──────────────────────────────┘
+```
+
+<!-- pause -->
+
+**Key Point:** Applications can't touch hardware directly!
+* Must ask kernel via system calls
 * Kernel validates and executes safely
 
-**Example: Opening a File**
-```c
-// Your program does this:
-int fd = open("/home/user/data.txt", O_RDONLY);
-
-// Behind the scenes:
-// 1. System call to kernel
-// 2. Kernel checks permissions
-// 3. Kernel accesses disk
-// 4. Returns file descriptor
-```
+<!-- speaker_note:
+Kernel sits between apps and hardware
+Provides protection and security
+System calls are the only way to request services
+-->
 
 <!-- end_slide -->
 
-
+<!-- jump_to_middle -->
 
 # Why Linux is the Best 🏆
-## Dominating the Tech World
 
 <!-- end_slide -->
 
-## Linux Runs Everything
+# Linux Dominates Everything
 
-**Where Linux Dominates:**
-* **96.3%** of top 1 million web servers
+<!-- pause -->
+
+```mermaid
+pie title "Where Linux Runs (2024)"
+    "Web Servers" : 96.3
+    "Supercomputers" : 100
+    "Mobile (Android)" : 70
+    "Cloud Infrastructure" : 90
+    "IoT Devices" : 80
+```
+
+<!-- pause -->
+
+**The Stats:**
+* **96.3%** of top web servers
 * **100%** of top 500 supercomputers
-* **Billions** of Android devices (Linux kernel)
-* Most cloud infrastructure (AWS, Google Cloud, Azure)
-* Mars rovers, ISS systems, CERN particle accelerators
-* Your smart TV, router, car infotainment system
-* IoT devices everywhere
+* **Billions** of Android devices
+* AWS, Google Cloud, Azure
+* Your router, smart TV, car
 
-**If you used the internet today, you used Linux!**
+<!-- pause -->
 
-<!-- end_slide -->
+> **If you used the internet today, you used Linux!**
 
-## Why Linux is Superior
-
-**1. Freedom & Cost**
-* Completely free (no licensing fees)
-* Full access to source code
-* Modify and redistribute as you wish
-* No vendor lock-in or forced upgrades
-
-**2. Security & Privacy**
-* Open source = thousands review the code
-* Fast security patches from global community
-* Granular permission system
-* No telemetry or data collection by default
-* Less malware targeting Linux
+<!-- speaker_note:
+Linux literally runs the modern world
+Even Microsoft runs Linux on Azure!
+Android = Linux kernel + Google's userspace
+-->
 
 <!-- end_slide -->
 
-## Why Linux is Superior (cont.)
+# Why Linux Wins
 
-**3. Stability & Performance**
-* Servers run for years without reboot
+<!-- pause -->
+
+<!-- columns -->
+
+<!-- column: 0.5 -->
+
+## 💰 Free & Open
+* No licensing costs
+* Source code available
+* Modify as needed
+* No vendor lock-in
+
+<!-- pause -->
+
+## 🔒 Secure
+* Open source review
+* Fast security patches
+* Less malware
+* Granular permissions
+
+<!-- column: 0.5 -->
+
+<!-- pause -->
+
+## ⚡ Powerful
+* Runs for years without reboot
 * Efficient resource usage
-* Scales from Raspberry Pi to supercomputers
-* No forced updates interrupting your work
-* Choose when and what to update
+* Scales from Pi to supercomputers
 
-**4. Total Customization**
-* Change absolutely everything
-* Pick your desktop environment
-* Mix and match components
-* Build your own distribution
-* Make it look and work exactly how you want
+<!-- pause -->
 
-<!-- end_slide -->
+## 🎨 Customizable
+* Change anything
+* Pick your desktop
+* Build your own distro
 
-## Why Linux is Superior (cont.)
+<!-- reset_layout -->
 
-**5. Developer Paradise**
-* Best programming tools included free
-* Package managers for instant software installs
-* Native Docker and container support
-* Every major language available
-* Built-in remote access (SSH)
-* Version control (git) integrated everywhere
-
-**6. Community Power**
-* Massive global community helping each other
-* Free support on forums, IRC, Discord
-* Extensive documentation and tutorials
-* Thousands of contributors improving it daily
+<!-- speaker_note:
+Compare costs: Windows Server = $6000+, Linux = $0
+Security: thousands of eyes reviewing code
+Performance: servers run for years
+Flexibility: make it exactly what you want
+-->
 
 <!-- end_slide -->
 
-## The Numbers Don't Lie 📊
+# The Numbers
 
-**Linux Development:**
+<!-- pause -->
+
+**Development Scale:**
 * 30+ million lines of code
 * 20,000+ contributors worldwide
 * 15,000+ companies involved
-* New kernel version every 9-10 weeks
-* Most actively developed OS in history
+* New kernel every 9-10 weeks
 
-**The Internet Runs on Linux:**
+<!-- pause -->
+
+**Real-World Usage:**
 * Google, Facebook, Amazon - all Linux
-* Netflix, Spotify, YouTube - Linux servers
-* Stock exchanges - Linux
-* Banking systems - Linux
+* Stock exchanges, banks - Linux
+* NASA, SpaceX - Linux
+* Hollywood render farms - Linux
 
-<!-- end_slide -->
+<!-- pause -->
 
-## Real World Impact 🌍
-
-**Science & Research:**
-* CERN's Large Hadron Collider
-* Human Genome Project
-* Climate modeling systems
-* Space exploration (NASA, SpaceX)
-
-**Entertainment:**
-* Hollywood render farms (Pixar, Disney)
-* Game servers
-* Streaming infrastructure
-
-**Critical Infrastructure:**
-* Air traffic control
-* Power grids
-* Telecommunications
-* Financial systems
-
-**Linux literally runs the modern world!**
-
-<!-- end_slide -->
-
-# GNU & The Movement 🦬
-## The Missing Piece
-
-<!-- end_slide -->
-
-## What is GNU?
-
-**GNU = GNU's Not Unix** (recursive acronym!)
-* Started 1983 by Richard Stallman
-* Goal: Free UNIX replacement
-* Built all the essential tools
-
-**The GNU Toolkit:**
-* bash, GCC, coreutils (ls, cp, mv)
-* glibc, Make, grep, sed, awk
-* Everything except... the kernel!
-
-<!-- end_slide -->
-
-## The Four Freedoms 🕊️
-
-**Free Software means:**
-
-0. **Run** - Use for any purpose
-1. **Study** - Examine source code
-2. **Share** - Redistribute copies
-3. **Improve** - Modify and share changes
-
-**"Free as in freedom, not just free beer"**
-
-<!-- end_slide -->
-
-## GNU + Linux = Perfect Match 🤝
-
-**The Problem (1991):**
-* GNU had: compiler, shell, tools ✅
-* GNU needed: a working kernel ❌
-* Linus had: a working kernel ✅
-* Linux needed: all the tools ❌
-
-**The Solution:**
-```
-Linux Kernel + GNU Tools = Complete Free OS
+```mermaid
+graph TB
+    A[Linux] --> B[Powers the Internet]
+    A --> C[Runs Supercomputers]
+    A --> D[Inside Android Phones]
+    A --> E[Cloud Infrastructure]
+    A --> F[Scientific Research]
+    A --> G[Financial Systems]
+    
+    style A fill:#f96,stroke:#333,stroke-width:4px
 ```
 
-Most people call it "Linux", technically it's "GNU/Linux"
+<!-- speaker_note:
+Most actively developed OS in history
+Contributions from Intel, Google, Red Hat, etc.
+Free software powering trillion-dollar industries
+-->
 
 <!-- end_slide -->
 
-# Let's Get Hands-On! 🚀
+<!-- jump_to_middle -->
 
-**Next Section:** Navigation & File System Basics
+# GNU & Free Software 🦬
+
+<!-- end_slide -->
+
+# The Four Freedoms
+
+<!-- pause -->
+
+**Free Software Means:**
+
+<!-- incremental_lists: true -->
+
+**0. Freedom to RUN**
+* Use for any purpose
+
+**1. Freedom to STUDY**
+* Examine the source code
+
+**2. Freedom to SHARE**
+* Redistribute copies
+
+**3. Freedom to IMPROVE**
+* Modify and share your changes
+
+<!-- pause -->
+
+> "Free as in **freedom**, not just free beer"
+
+<!-- speaker_note:
+These are the core principles of free software
+"Free" = liberty, not just price
+Rights that proprietary software denies you
+-->
+
+<!-- end_slide -->
+
+# GNU + Linux: The Perfect Match
+
+<!-- pause -->
+
+```mermaid
+flowchart LR
+    A[GNU Project<br/>1983] -->|Built| B[Compiler<br/>Shell<br/>Tools]
+    C[Linux<br/>1991] -->|Built| D[Kernel]
+    
+    B --> E{Combine}
+    D --> E
+    
+    E --> F[Complete Free OS<br/>GNU/Linux]
+    
+    style A fill:#fff3e0,stroke:#333,stroke-width:2px
+    style C fill:#e3f2fd,stroke:#333,stroke-width:2px
+    style F fill:#c8e6c9,stroke:#333,stroke-width:4px
+```
+
+<!-- pause -->
+
+**Why "GNU/Linux"?**
+* GNU provided: compiler, shell, tools (30+ years of work)
+* Linux provided: kernel (the missing piece)
+* Together: complete operating system
+
+<!-- pause -->
+
+**But we say "Linux" because:**
+* Shorter and catchier
+* Kernel was the crucial final piece
+* Common usage
+
+<!-- speaker_note:
+Richard Stallman insists on "GNU/Linux"
+Technically correct, but "Linux" stuck
+Both contributions were essential
+Together they changed the world
+-->
+
+<!-- end_slide -->
+
+# GPL License
+
+<!-- pause -->
+
+**GNU Public License (GPL):**
+
+<!-- incremental_lists: true -->
+
+* You can use the software freely
+* You can modify the source code
+* You can distribute it
+* **BUT:** If you share modified versions, you must:
+  * Keep it free (GPL)
+  * Share your source code too
+
+<!-- pause -->
+
+**This ensures:**
+* Software stays free forever
+* Improvements benefit everyone
+* No one can make it proprietary
+
+<!-- pause -->
+
+> "Copyleft" - the opposite of copyright!
+
+<!-- speaker_note:
+GPL is viral - keeps software free
+If you use GPL code, your code must be GPL too
+This is why Linux will always be free
+Contrast with permissive licenses (MIT, BSD)
+-->
+
+<!-- end_slide -->
+
+# Desktop Linux
+
+<!-- pause -->
+
+**Popular Distributions:**
+
+<!-- columns -->
+
+<!-- column: 0.5 -->
+
+**Beginner-Friendly:**
+* Ubuntu
+* Linux Mint
+* Pop!_OS
+* Zorin OS
+
+<!-- column: 0.5 -->
+
+**Advanced:**
+* Arch Linux
+* Fedora
+* Debian
+* Gentoo
+
+<!-- reset_layout -->
+
+<!-- pause -->
+
+**Desktop Environments:**
+* GNOME (Ubuntu default)
+* KDE Plasma (beautiful & customizable)
+* XFCE (lightweight)
+* Cinnamon (traditional)
+
+<!-- speaker_note:
+Desktop Linux is only ~3% market share
+But growing steadily
+Great for developers and power users
+Many choices - find what fits you!
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Key Takeaways 🎯
+
+<!-- pause -->
+
+<!-- incremental_lists: true -->
+
+1. **History:** UNIX (1969) → GNU (1983) → Linux (1991)
+
+2. **Terms:**
+   * Terminal = window | Shell = interpreter
+   * Kernel = core | OS = complete system
+
+3. **Dominance:** Linux runs 96%+ of servers & 100% of supercomputers
+
+4. **Why:** Free, secure, stable, customizable
+
+5. **GNU:** Provided the tools, Linux provided the kernel
+
+6. **Freedom:** Four freedoms ensure software stays free
+
+<!-- pause -->
+
+> **You're already using Linux - now you know why it matters!**
+
+<!-- speaker_note:
+Recap the essential points
+Linux is everywhere, powering the digital world
+Built by community, free for everyone
+Understanding these basics is foundation for everything else
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Next Up: Hands-On! 🚀
+
+## Part 2: File System & Navigation
+
+<!-- pause -->
+
+**Get Ready To:**
+* Explore the Linux file system
+* Master essential commands
+* Navigate like a pro
+
+<!-- speaker_note:
+Break time if needed
+Make sure everyone has terminal access
+Next section is practical
+-->
+
 <!-- end_slide -->
