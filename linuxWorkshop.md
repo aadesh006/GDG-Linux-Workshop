@@ -15,7 +15,6 @@ options:
   implicit_slide_ends: false
 ---
 
-<!-- end_slide -->
 
 # Linux Essentials
 
@@ -497,6 +496,2515 @@ Username can be different from Windows username
 * Learn essential commands
 
 <!-- end_slide -->
+
+
+# Linux Fundamentals
+```
+   __    _                    ____            _          
+  / /   (_)___  __  ___  __  / __ )____ ______(_)_________
+ / /   / / __ \/ / / / |/_/ / __  / __ `/ ___/ / ___/ ___/
+/ /___/ / / / / /_/ />  <  / /_/ / /_/ (__  ) / /__(__  ) 
+\____/_/_/ /_/\__,_/_/|_| /_____/\__,_/____/_/\___/____/  
+```
+
+**What we'll cover:**
+* Understanding the Linux filesystem
+* Navigating directories
+* Working with files and directories
+* Viewing and manipulating file content
+* Searching and finding files
+* Understanding permissions
+* Process management basics
+
+<!-- end_slide -->
+
+# Part 1: Understanding the Filesystem
+
+## The Linux Directory Structure
+
+**Unlike Windows (C:\, D:\), Linux has ONE tree:**
+
+```
+/                    (root - the top of everything)
+├── home/            (user home directories)
+│   └── abhimanyu/      (your personal files)
+├── etc/             (configuration files)
+├── var/             (variable data - logs, caches)
+├── usr/             (user programs and libraries)
+├── tmp/             (temporary files)
+├── bin/             (essential command binaries)
+├── sbin/            (system binaries)
+└── opt/             (optional software)
+```
+
+**Key Concepts:**
+* `/` is the root (not a drive letter)
+* Paths use forward slashes `/` (not backslashes)
+* Hidden files start with `.` (like `.bashrc`)
+* Case-sensitive: `File.txt` ≠ `file.txt`
+
+<!-- end_slide -->
+
+## Home Directory
+
+**Your personal space: `/home/username`**
+
+**Shortcuts:**
+* `~` → Your home directory
+* `~abhimanyu` → abhimanyu's home directory
+* `.` → Current directory
+* `..` → Parent directory
+* `-` → Previous directory
+
+```bash +exec
+# These are all the same (if you're the user)
+echo "Home: $HOME"
+echo "Tilde: ~"
+echo "PWD: $(pwd)"
+```
+
+**Common paths you'll use:**
+* `~/Documents` → Your documents
+* `~/Downloads` → Downloaded files
+* `~/Desktop` → Desktop items
+* `~/.config` → Application configs (hidden)
+
+<!-- end_slide -->
+
+# Part 2: Navigation Commands
+
+## pwd - Print Working Directory
+
+**Where am I right now?**
+
+```bash +exec
+pwd
+```
+
+**What it shows:**
+* Full absolute path from root `/`
+* Your current location in the filesystem
+
+**When to use:**
+* When you're lost in the terminal
+* Before running potentially dangerous commands
+* In scripts to verify location
+
+**Pro tip:** Most terminals show this in the prompt!
+```
+abhimanyu@system:~/projects/website$
+              ^^^^^^^^^^^^^^^^
+              This is your pwd
+```
+
+<!-- end_slide -->
+
+## ls - List Directory Contents
+
+**The most-used Linux command!**
+
+**Basic usage:**
+```bash +exec
+# List files in current directory
+ls
+
+# List with details
+ls -l
+
+# List all files (including hidden)
+ls -a
+
+# Human-readable sizes
+ls -lh
+
+# Sort by modification time (newest first)
+ls -lt
+```
+
+**Combine options:**
+```bash +exec
+# Common combination: all files, detailed, human-readable
+ls -lah
+```
+
+<!-- end_slide -->
+
+## Understanding ls -l Output
+
+**Let's decode the output:**
+
+```
+-rw-r--r-- 1 abhimanyu abhimanyu 4096 Jan 28 10:30 document.txt
+│││││││││  │ │      │      │    │          │
+│││││││││  │ │      │      │    │          └─ Filename
+│││││││││  │ │      │      │    └─ Modification time
+│││││││││  │ │      │      └─ Size in bytes
+│││││││││  │ │      └─ Group owner
+│││││││││  │ └─ User owner
+│││││││││  └─ Number of links
+│││││││││
+││││││││└─ Others: execute (x)
+│││││││└── Others: write (w)
+││││││└─── Others: read (r)
+│││││└──── Group: execute
+││││└───── Group: write
+│││└────── Group: read
+││└─────── Owner: execute
+│└──────── Owner: write
+└───────── Owner: read (or file type)
+```
+
+**File type indicators:**
+* `-` → Regular file
+* `d` → Directory
+* `l` → Symbolic link
+
+<!-- end_slide -->
+
+## ls - More Useful Options
+
+**Sorting and filtering:**
+
+```bash +exec
+# Sort by size (largest first)
+ls -lS
+
+# Reverse order
+ls -lr
+
+# Sort by extension
+ls -lX
+
+# Only show directories
+ls -d */
+
+# Recursive listing (show subdirectories)
+ls -R
+
+# One file per line
+ls -1
+```
+
+**Pro tip - Aliases:**
+```bash
+# Many systems have these by default
+ll    # alias for 'ls -l'
+la    # alias for 'ls -la'
+```
+
+<!-- end_slide -->
+
+## cd - Change Directory
+
+**Navigate the filesystem:**
+
+```bash
+# Go to home directory
+cd
+cd ~
+
+# Go to specific directory
+cd /var/log
+
+# Go up one level
+cd ..
+
+# Go up two levels
+cd ../..
+
+# Go to previous directory
+cd -
+
+# Relative path (from current location)
+cd Documents/projects
+
+# Absolute path (from root)
+cd /home/abhimanyu/Documents
+```
+
+**Tab completion is your friend!**
+* Type `cd Doc` and press TAB
+* Shell completes to `cd Documents/`
+
+<!-- end_slide -->
+
+## cd - Practical Examples
+
+```bash +exec
+#!/bin/bash
+
+echo "=== Navigation Demo ==="
+
+# Show current location
+echo "Starting at: $(pwd)"
+
+# Create demo structure
+mkdir -p demo/projects/website
+mkdir -p demo/documents
+
+# Navigate around
+cd demo
+echo "Now in: $(pwd)"
+
+cd projects/website
+echo "Now in: $(pwd)"
+
+cd ../..
+echo "Back to: $(pwd)"
+
+# Clean up
+cd ..
+rm -rf demo
+```
+
+**Common mistakes:**
+* ❌ `cd ..` (space required!)
+* ❌ `cd/home` (space required!)
+* ✅ `cd ..` (correct)
+* ✅ `cd /home` (correct)
+
+<!-- end_slide -->
+
+# Part 3: Working with Files
+
+## Creating Files and Directories
+
+**mkdir - Make directories:**
+
+```bash +exec
+# Create single directory
+mkdir my_project
+
+# Create multiple directories
+mkdir dir1 dir2 dir3
+
+# Create nested directories
+mkdir -p projects/web/css
+
+# Create with specific permissions
+mkdir -m 755 public_folder
+
+# Verbose output
+mkdir -v new_folder
+
+# Cleanup
+rm -rf my_project dir1 dir2 dir3 projects public_folder new_folder
+```
+
+**touch - Create empty files:**
+
+```bash +exec
+# Create new file
+touch newfile.txt
+
+# Create multiple files
+touch file1.txt file2.txt file3.txt
+
+# Update timestamp of existing file
+touch existing_file.txt
+
+# Cleanup
+rm -f newfile.txt file1.txt file2.txt file3.txt
+```
+
+<!-- end_slide -->
+
+## cp - Copy Files and Directories
+
+**Basic copying:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+echo "Hello Linux!" > original.txt
+
+# Copy file
+cp original.txt backup.txt
+
+# Copy with verbose output
+cp -v original.txt another_copy.txt
+
+# Copy multiple files to directory
+mkdir backup_dir
+cp original.txt backup.txt backup_dir/
+
+# Show results
+echo "Files created:"
+ls -l *.txt backup_dir/
+
+# Cleanup
+rm -rf original.txt backup.txt another_copy.txt backup_dir
+```
+
+<!-- end_slide -->
+
+## cp - Advanced Options
+
+**Copying directories and preserving attributes:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo structure
+mkdir -p source/subdir
+echo "File 1" > source/file1.txt
+echo "File 2" > source/subdir/file2.txt
+
+# Copy directory recursively
+cp -r source destination
+
+# Copy and preserve attributes (permissions, timestamps)
+cp -rp source destination_preserve
+
+# Interactive copy (ask before overwrite)
+# cp -i file.txt existing.txt
+
+# Force copy (overwrite without asking)
+cp -f source/file1.txt destination/
+
+# Show results
+echo "Directory structure:"
+ls -R destination
+
+# Cleanup
+rm -rf source destination destination_preserve
+```
+
+<!-- end_slide -->
+
+## mv - Move and Rename
+
+**Move files/directories:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo files
+mkdir demo_mv
+cd demo_mv
+
+touch oldname.txt
+echo "Content" > file.txt
+mkdir old_dir
+
+# Rename file
+mv oldname.txt newname.txt
+
+# Move file to directory
+mkdir destination
+mv file.txt destination/
+
+# Rename directory
+mv old_dir new_dir
+
+# Move multiple files
+touch a.txt b.txt c.txt
+mv a.txt b.txt c.txt destination/
+
+echo "Final structure:"
+ls -R
+
+# Cleanup
+cd ..
+rm -rf demo_mv
+```
+
+**Remember:** `mv` does NOT copy - it moves!
+
+<!-- end_slide -->
+
+## rm - Remove Files and Directories
+
+**⚠️ DANGER: No trash bin in Linux! Deletions are permanent!**
+
+```bash +exec
+#!/bin/bash
+
+# Create test files
+touch test1.txt test2.txt
+mkdir test_dir
+touch test_dir/file.txt
+
+# Remove file
+rm test1.txt
+
+# Remove multiple files
+touch temp1 temp2 temp3
+rm temp1 temp2 temp3
+
+# Remove directory (must be empty)
+mkdir empty_dir
+rmdir empty_dir
+
+# Remove directory and contents (DANGEROUS!)
+rm -r test_dir
+
+# Force remove without prompting
+touch unwanted.txt
+rm -f unwanted.txt
+
+# Interactive mode (asks before each deletion)
+# rm -i file.txt
+
+# Cleanup
+rm -f test2.txt
+```
+
+**Safety tips:**
+* Use `rm -i` for important deletions
+* Double-check with `ls` before `rm -rf`
+* Never run `rm -rf /` or `rm -rf /*`
+
+<!-- end_slide -->
+
+# Part 4: Viewing File Contents
+
+## cat - Concatenate and Display
+
+**View entire file:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+cat > demo.txt << 'EOF'
+Line 1: Introduction to Linux
+Line 2: Learning commands
+Line 3: Practicing daily
+Line 4: Becoming proficient
+Line 5: Mastering the terminal
+EOF
+
+# Display file
+echo "=== File Contents ==="
+cat demo.txt
+
+# Display with line numbers
+echo -e "\n=== With Line Numbers ==="
+cat -n demo.txt
+
+# Display multiple files
+echo "Content 1" > file1.txt
+echo "Content 2" > file2.txt
+echo -e "\n=== Multiple Files ==="
+cat file1.txt file2.txt
+
+# Cleanup
+rm -f demo.txt file1.txt file2.txt
+```
+
+<!-- end_slide -->
+
+## cat - Creating Files
+
+**Quick way to create files:**
+
+```bash
+# Method 1: Simple redirect
+cat > newfile.txt
+Type your content here
+Press Ctrl+D when done
+
+# Method 2: Here document
+cat > script.sh << 'EOF'
+#!/bin/bash
+echo "Hello World"
+EOF
+
+# Method 3: Append to file
+cat >> existing.txt << 'EOF'
+This line will be added
+to the end of the file
+EOF
+```
+
+**Pro tip:** For long files, use `less` or `more` instead of `cat`
+
+<!-- end_slide -->
+
+## less - View Files Page by Page
+
+**Better than cat for large files:**
+
+```bash
+less /var/log/syslog
+less largefile.txt
+```
+
+**Navigation keys:**
+* `Space` or `Page Down` → Next page
+* `b` or `Page Up` → Previous page
+* `g` → Go to beginning
+* `G` → Go to end
+* `/pattern` → Search forward
+* `?pattern` → Search backward
+* `n` → Next search result
+* `N` → Previous search result
+* `q` → Quit
+
+**Why "less"?**
+* Doesn't load entire file into memory
+* Can scroll backwards
+* Better than "more" (hence the joke: "less is more")
+
+<!-- end_slide -->
+
+## head and tail - View File Portions
+
+**head - First lines of file:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+seq 1 100 > numbers.txt
+
+echo "=== First 10 lines (default) ==="
+head numbers.txt
+
+echo -e "\n=== First 5 lines ==="
+head -n 5 numbers.txt
+
+echo -e "\n=== First 3 lines ==="
+head -3 numbers.txt
+
+# Cleanup
+rm numbers.txt
+```
+
+<!-- end_slide -->
+
+## tail - View End of Files
+
+**tail - Last lines of file:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+seq 1 20 > numbers.txt
+
+echo "=== Last 10 lines (default) ==="
+tail numbers.txt
+
+echo -e "\n=== Last 5 lines ==="
+tail -n 5 numbers.txt
+
+# Cleanup
+rm numbers.txt
+```
+
+**Follow mode (super useful for logs!):**
+
+```bash
+# Watch log file in real-time (press Ctrl+C to stop)
+tail -f /var/log/syslog
+
+# Follow with line numbers
+tail -fn 20 application.log
+```
+
+**Real-world usage:** Monitoring server logs, debugging applications
+
+<!-- end_slide -->
+
+## wc - Word Count
+
+**Count lines, words, and characters:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+cat > sample.txt << 'EOF'
+Linux is awesome
+Shell scripting is powerful
+Practice makes perfect
+EOF
+
+echo "=== Full statistics ==="
+wc sample.txt
+
+echo -e "\n=== Lines only ==="
+wc -l sample.txt
+
+echo -e "\n=== Words only ==="
+wc -w sample.txt
+
+echo -e "\n=== Characters only ==="
+wc -c sample.txt
+
+echo -e "\n=== Bytes ==="
+wc -m sample.txt
+
+# Cleanup
+rm sample.txt
+```
+
+**Output format:** `lines words bytes filename`
+
+<!-- end_slide -->
+
+## wc - Practical Examples
+
+```bash +exec
+#!/bin/bash
+
+# Create test files
+echo -e "Line 1\nLine 2\nLine 3" > file1.txt
+echo -e "A\nB\nC\nD\nE" > file2.txt
+
+# Count lines in multiple files
+echo "=== Multiple files ==="
+wc -l file1.txt file2.txt
+
+# Count total lines in directory
+echo -e "\n=== Total lines ==="
+wc -l *.txt
+
+# Pipeline example: count .txt files
+echo -e "\n=== Count .txt files ==="
+ls *.txt | wc -l
+
+# Count users on system
+echo -e "\n=== Number of users ==="
+cut -d: -f1 /etc/passwd | wc -l
+
+# Cleanup
+rm file1.txt file2.txt
+```
+
+<!-- end_slide -->
+
+# Part 5: Searching and Finding
+
+## grep - Search Text Patterns
+
+**The search powerhouse:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo file
+cat > server.log << 'EOF'
+2024-01-28 10:00:00 INFO Server started
+2024-01-28 10:01:15 ERROR Connection failed
+2024-01-28 10:02:30 INFO Request processed
+2024-01-28 10:03:45 ERROR Database timeout
+2024-01-28 10:04:00 INFO User logged in
+2024-01-28 10:05:00 WARNING High memory usage
+EOF
+
+echo "=== Find ERROR lines ==="
+grep "ERROR" server.log
+
+echo -e "\n=== Case-insensitive search ==="
+grep -i "error" server.log
+
+echo -e "\n=== Count matches ==="
+grep -c "ERROR" server.log
+
+echo -e "\n=== Show line numbers ==="
+grep -n "ERROR" server.log
+
+# Cleanup
+rm server.log
+```
+
+<!-- end_slide -->
+
+## grep - Advanced Options
+
+```bash +exec
+#!/bin/bash
+
+# Create demo files
+cat > file1.txt << 'EOF'
+apple
+banana
+cherry
+EOF
+
+cat > file2.txt << 'EOF'
+banana
+date
+elderberry
+EOF
+
+# Search multiple files
+echo "=== Search in multiple files ==="
+grep "banana" file1.txt file2.txt
+
+# Invert match (lines NOT matching)
+echo -e "\n=== Lines WITHOUT 'a' ==="
+grep -v "a" file1.txt
+
+# Recursive search in directory
+mkdir demo_dir
+cp file1.txt demo_dir/
+echo -e "\n=== Recursive search ==="
+grep -r "apple" demo_dir
+
+# Show only filenames
+echo -e "\n=== Files containing 'banana' ==="
+grep -l "banana" *.txt
+
+# Cleanup
+rm file1.txt file2.txt
+rm -rf demo_dir
+```
+
+<!-- end_slide -->
+
+## grep - Regular Expressions
+
+**Pattern matching power:**
+
+```bash +exec
+#!/bin/bash
+
+cat > emails.txt << 'EOF'
+Contact: john@example.com
+Email: invalid-email
+Support: support@company.org
+Info: info@test.co.uk
+EOF
+
+# Basic regex: lines starting with 'Contact'
+echo "=== Lines starting with 'Contact' ==="
+grep "^Contact" emails.txt
+
+# Lines ending with '.com'
+echo -e "\n=== Lines ending with '.com' ==="
+grep "\.com$" emails.txt
+
+# Email pattern (simple)
+echo -e "\n=== Email-like patterns ==="
+grep -E "[a-z]+@[a-z]+\.[a-z]+" emails.txt
+
+# Extended regex
+echo -e "\n=== Using extended regex ==="
+grep -E "^(Contact|Email):" emails.txt
+
+rm emails.txt
+```
+
+**Common patterns:**
+* `^` → Start of line
+* `$` → End of line
+* `.` → Any character
+* `*` → Zero or more
+* `[abc]` → Any of a, b, or c
+
+<!-- end_slide -->
+
+## find - Locate Files and Directories
+
+**Search by name:**
+
+```bash +exec
+#!/bin/bash
+
+# Create demo structure
+mkdir -p findtest/{dir1,dir2,dir3}
+touch findtest/file1.txt
+touch findtest/dir1/data.csv
+touch findtest/dir2/script.sh
+touch findtest/dir3/README.md
+
+cd findtest
+
+# Find all .txt files
+echo "=== Find .txt files ==="
+find . -name "*.txt"
+
+# Find case-insensitive
+echo -e "\n=== Case-insensitive search ==="
+find . -iname "readme.md"
+
+# Find directories only
+echo -e "\n=== Find directories ==="
+find . -type d
+
+# Find files only
+echo -e "\n=== Find files ==="
+find . -type f
+
+# Cleanup
+cd ..
+rm -rf findtest
+```
+
+<!-- end_slide -->
+
+## find - Advanced Searches
+
+```bash +exec
+#!/bin/bash
+
+mkdir findtest
+cd findtest
+
+# Create files with different sizes and times
+echo "small" > small.txt
+echo "This is a larger file with more content" > large.txt
+touch -t 202401010000 old.txt
+touch new.txt
+
+# Find by size
+echo "=== Files larger than 10 bytes ==="
+find . -type f -size +10c
+
+# Find by modification time
+echo -e "\n=== Files modified in last 1 day ==="
+find . -type f -mtime -1
+
+# Find and execute command
+echo -e "\n=== Find and show details ==="
+find . -type f -name "*.txt" -exec ls -lh {} \;
+
+# Find empty files
+touch empty.txt
+echo -e "\n=== Empty files ==="
+find . -type f -empty
+
+# Cleanup
+cd ..
+rm -rf findtest
+```
+
+<!-- end_slide -->
+
+## find - Practical Examples
+
+**Real-world scenarios:**
+
+```bash
+# Find and delete old log files (older than 30 days)
+find /var/log -name "*.log" -mtime +30 -delete
+
+# Find large files (>100MB)
+find /home -type f -size +100M
+
+# Find files modified in last hour
+find . -mmin -60
+
+# Find files by permission
+find . -type f -perm 0644
+
+# Find and compress
+find . -name "*.log" -exec gzip {} \;
+
+# Find world-writable files (security check)
+find /home -type f -perm -002
+
+# Count files in directory tree
+find . -type f | wc -l
+```
+
+<!-- end_slide -->
+
+# Part 7: Text Processing
+
+## sort - Sort Lines
+
+```bash +exec
+#!/bin/bash
+
+cat > unsorted.txt << 'EOF'
+banana
+apple
+cherry
+date
+apple
+EOF
+
+echo "=== Alphabetical sort ==="
+sort unsorted.txt
+
+echo -e "\n=== Reverse sort ==="
+sort -r unsorted.txt
+
+echo -e "\n=== Remove duplicates ==="
+sort -u unsorted.txt
+
+# Numeric sort
+cat > numbers.txt << 'EOF'
+100
+20
+3
+45
+EOF
+
+echo -e "\n=== Numeric sort ==="
+sort -n numbers.txt
+
+rm unsorted.txt numbers.txt
+```
+
+<!-- end_slide -->
+
+## uniq - Remove Duplicates
+
+**Must be sorted first!**
+
+```bash +exec
+#!/bin/bash
+
+cat > duplicates.txt << 'EOF'
+apple
+apple
+banana
+banana
+banana
+cherry
+date
+date
+EOF
+
+echo "=== Remove consecutive duplicates ==="
+uniq duplicates.txt
+
+echo -e "\n=== Count occurrences ==="
+uniq -c duplicates.txt
+
+echo -e "\n=== Show only duplicates ==="
+uniq -d duplicates.txt
+
+echo -e "\n=== Show only unique lines ==="
+uniq -u duplicates.txt
+
+echo -e "\n=== Proper usage with sort ==="
+sort duplicates.txt | uniq -c
+
+rm duplicates.txt
+```
+
+<!-- end_slide -->
+
+## cut - Extract Columns
+
+```bash +exec
+#!/bin/bash
+
+cat > data.csv << 'EOF'
+Name,Age,City
+John,25,NYC
+Jane,30,LA
+Bob,35,Chicago
+EOF
+
+echo "=== Extract first column (comma delimiter) ==="
+cut -d',' -f1 data.csv
+
+echo -e "\n=== Extract age (2nd column) ==="
+cut -d',' -f2 data.csv
+
+echo -e "\n=== Extract multiple columns ==="
+cut -d',' -f1,3 data.csv
+
+# Character-based cut
+echo -e "\n=== First 4 characters ==="
+cut -c1-4 data.csv
+
+rm data.csv
+```
+
+**Common delimiters:**
+* `,` → CSV files
+* `:` → /etc/passwd
+* `\t` → Tab-separated
+
+<!-- end_slide -->
+
+## tr - Translate Characters
+
+```bash +exec
+#!/bin/bash
+
+echo "=== Lowercase to uppercase ==="
+echo "hello world" | tr 'a-z' 'A-Z'
+
+echo -e "\n=== Uppercase to lowercase ==="
+echo "HELLO WORLD" | tr 'A-Z' 'a-z'
+
+echo -e "\n=== Delete characters ==="
+echo "Hello123World456" | tr -d '0-9'
+
+echo -e "\n=== Replace spaces with underscores ==="
+echo "hello world linux" | tr ' ' '_'
+
+echo -e "\n=== Squeeze repeated characters ==="
+echo "hellooooo    world" | tr -s 'o '
+
+echo -e "\n=== Remove newlines ==="
+echo -e "line1\nline2\nline3" | tr -d '\n'
+echo ""
+```
+
+<!-- end_slide -->
+
+# Part 8: Pipes and Redirection
+
+## The Power of Pipes
+
+**Pipe `|` - Connect commands:**
+
+```bash +exec
+#!/bin/bash
+
+# Create sample data
+cat > users.txt << 'EOF'
+alice
+bob
+charlie
+alice
+david
+bob
+alice
+EOF
+
+echo "=== Sort and remove duplicates ==="
+cat users.txt | sort | uniq
+
+echo -e "\n=== Count unique users ==="
+cat users.txt | sort | uniq | wc -l
+
+echo -e "\n=== Find and count ==="
+cat users.txt | grep 'a' | wc -l
+
+echo -e "\n=== Complex pipeline ==="
+cat users.txt | sort | uniq -c | sort -rn
+
+rm users.txt
+```
+
+**Pipeline concept:** Output of one → Input of next
+
+<!-- end_slide -->
+
+## Redirection Operators
+
+**Standard streams:**
+
+```bash +exec
+#!/bin/bash
+
+# STDOUT redirect (>)
+echo "=== Redirect output to file ==="
+echo "Hello World" > output.txt
+cat output.txt
+
+# Append (>>)
+echo -e "\n=== Append to file ==="
+echo "Second line" >> output.txt
+cat output.txt
+
+# STDERR redirect (2>)
+echo -e "\n=== Redirect errors ==="
+ls /nonexistent 2> errors.txt
+cat errors.txt
+
+# Both STDOUT and STDERR
+echo -e "\n=== Redirect both ==="
+ls /home /nonexistent > combined.txt 2>&1
+cat combined.txt
+
+# Cleanup
+rm output.txt errors.txt combined.txt
+```
+
+<!-- end_slide -->
+
+## Input Redirection
+
+```bash +exec
+#!/bin/bash
+
+# Create input file
+cat > input.txt << 'EOF'
+apple
+banana
+cherry
+EOF
+
+# Read from file
+echo "=== Using < to read file ==="
+while IFS= read -r line; do
+    echo "Fruit: $line"
+done < input.txt
+
+# Here document
+echo -e "\n=== Here document ==="
+cat << 'EOF'
+This is a
+multi-line
+input
+EOF
+
+# Here string
+echo -e "\n=== Here string ==="
+tr 'a-z' 'A-Z' <<< "hello world"
+
+rm input.txt
+```
+
+<!-- end_slide -->
+
+## Practical Pipeline Examples
+
+**Real-world command combinations:**
+
+```bash +exec
+#!/bin/bash
+
+# Create sample log file
+cat > access.log << 'EOF'
+192.168.1.1 - GET /home
+192.168.1.2 - POST /login
+192.168.1.1 - GET /about
+192.168.1.3 - GET /home
+192.168.1.2 - GET /home
+EOF
+
+# Most frequent IP addresses
+echo "=== Top IP addresses ==="
+cut -d' ' -f1 access.log | sort | uniq -c | sort -rn
+
+# Count unique IPs
+echo -e "\n=== Unique IPs count ==="
+cut -d' ' -f1 access.log | sort | uniq | wc -l
+
+# Find specific pattern and count
+echo -e "\n=== GET requests count ==="
+grep "GET" access.log | wc -l
+
+rm access.log
+```
+
+<!-- end_slide -->
+
+# Part 9: System Information
+
+## Disk Usage Commands
+
+**df - Disk Free:**
+
+```bash +exec
+echo "=== Filesystem usage ==="
+df -h | head -5
+
+echo -e "\n=== Human-readable, specific filesystem ==="
+df -h / | tail -1
+```
+
+**du - Disk Usage:**
+
+```bash +exec
+#!/bin/bash
+
+mkdir -p demo/dir1/dir2
+echo "content" > demo/file1.txt
+echo "more content" > demo/dir1/file2.txt
+
+echo "=== Directory sizes ==="
+du -h demo
+
+echo -e "\n=== Summary only ==="
+du -sh demo
+
+echo -e "\n=== Sort by size ==="
+du -h demo | sort -h
+
+rm -rf demo
+```
+
+<!-- end_slide -->
+
+## File and System Info
+
+**file - Determine file type:**
+
+```bash +exec
+#!/bin/bash
+
+# Create different file types
+echo "#!/bin/bash" > script.sh
+echo "Text content" > document.txt
+echo "Binary" > data.bin
+
+echo "=== Identify file types ==="
+file script.sh
+file document.txt
+file /bin/bash
+
+rm script.sh document.txt data.bin
+```
+
+**uname - System information:**
+
+```bash +exec
+echo "=== System info ==="
+echo "Kernel name: $(uname -s)"
+echo "Kernel release: $(uname -r)"
+echo "Machine: $(uname -m)"
+echo "All: $(uname -a)"
+```
+
+<!-- end_slide -->
+
+## User and Process Info
+
+**whoami / who:**
+
+```bash +exec
+echo "=== Current user ==="
+whoami
+
+echo -e "\n=== Logged in users ==="
+who
+
+echo -e "\n=== Detailed user info ==="
+id
+```
+
+**uptime:**
+
+```bash +exec
+echo "=== System uptime ==="
+uptime
+```
+
+**free - Memory usage:**
+
+```bash +exec
+echo "=== Memory info (human-readable) ==="
+free -h
+```
+
+<!-- end_slide -->
+
+# Part 10: Advanced Tips
+
+## Command History
+
+**Navigate your command history:**
+
+```bash
+# Show history
+history
+
+# Run command #42
+!42
+
+# Run last command
+!!
+
+# Run last command starting with 'ls'
+!ls
+
+# Reverse search (interactive)
+Ctrl+R → type to search
+
+# Clear history
+history -c
+```
+
+**History file:** `~/.bash_history`
+
+**Pro tips:**
+* Use ↑ and ↓ arrows to browse
+* `Ctrl+R` is extremely powerful
+* Add to `~/.bashrc`: `export HISTSIZE=10000`
+
+<!-- end_slide -->
+
+## Wildcards and Globbing
+
+**Pattern matching shortcuts:**
+
+```bash +exec
+#!/bin/bash
+
+# Create test files
+touch file1.txt file2.txt file3.doc script.sh readme.md
+
+echo "=== All .txt files ==="
+ls *.txt
+
+echo -e "\n=== Files starting with 'file' ==="
+ls file*
+
+echo -e "\n=== Single character wildcard ==="
+ls file?.txt
+
+echo -e "\n=== Character range ==="
+ls file[1-2].txt
+
+echo -e "\n=== Negation ==="
+ls file[!3]*
+
+# Cleanup
+rm file1.txt file2.txt file3.doc script.sh readme.md
+```
+
+**Wildcards:**
+* `*` → Zero or more characters
+* `?` → Exactly one character
+* `[abc]` → Any of a, b, or c
+* `[!abc]` → Not a, b, or c
+* `[0-9]` → Any digit
+
+<!-- end_slide -->
+
+## Tab Completion
+
+**Save time with Tab key:**
+
+**How it works:**
+1. Type beginning of command/path
+2. Press Tab once → Auto-complete if unique
+3. Press Tab twice → Show all options
+
+**Examples:**
+```bash
+# Command completion
+doc<TAB> → docker
+
+# Path completion
+cd /home/aa<TAB> → cd /home/abhimanyu/
+
+# Filename completion
+cat Do<TAB> → cat Documents/
+
+# Variable completion
+echo $HO<TAB> → echo $HOME
+```
+
+**Pro tip:** Tab completion works for:
+* Commands
+* Filenames
+* Directories
+* Variables
+* SSH hosts (in ~/.ssh/config)
+
+<!-- end_slide -->
+
+## Keyboard Shortcuts
+
+**Essential shortcuts:**
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+C` | Stop current command |
+| `Ctrl+D` | Exit shell / EOF |
+| `Ctrl+L` | Clear screen |
+| `Ctrl+A` | Move to start of line |
+| `Ctrl+E` | Move to end of line |
+| `Ctrl+U` | Delete to start of line |
+| `Ctrl+K` | Delete to end of line |
+| `Ctrl+W` | Delete word backwards |
+| `Ctrl+R` | Reverse search history |
+| `Ctrl+Z` | Suspend process |
+
+**Navigation:**
+* `Alt+B` → Move back one word
+* `Alt+F` → Move forward one word
+
+<!-- end_slide -->
+
+## Aliases - Create Shortcuts
+
+**Make your own commands:**
+
+```bash
+# Temporary aliases (current session)
+alias ll='ls -la'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias update='sudo apt update && sudo apt upgrade'
+alias gs='git status'
+alias gc='git commit'
+
+# See all aliases
+alias
+
+# Remove alias
+unalias ll
+```
+
+**Permanent aliases:**
+Add to `~/.bashrc` or `~/.bash_aliases`:
+
+```bash
+# Custom aliases
+alias please='sudo'
+alias ports='netstat -tulanp'
+alias meminfo='free -h'
+alias cpuinfo='lscpu'
+```
+
+Then run: `source ~/.bashrc`
+
+<!-- end_slide -->
+
+## Command Chaining
+
+**Run multiple commands:**
+
+```bash +exec
+#!/bin/bash
+
+# Sequential (;) - runs regardless
+echo "Command 1" ; echo "Command 2" ; echo "Command 3"
+
+# AND (&&) - runs only if previous succeeds
+mkdir testdir && cd testdir && echo "Success!"
+cd .. && rm -rf testdir
+
+# OR (||) - runs only if previous fails
+ls /nonexistent 2>/dev/null || echo "Directory not found"
+```
+
+**Background execution:**
+```bash
+# Run in background
+sleep 10 &
+
+# Multiple background jobs
+command1 & command2 & command3 &
+
+# Wait for all background jobs
+wait
+```
+
+<!-- end_slide -->
+
+## Environment Variables
+
+**Viewing and setting:**
+
+```bash +exec
+# View specific variable
+echo $HOME
+echo $PATH
+echo $USER
+
+# View all environment variables
+# env
+# printenv
+
+# Set temporary variable
+MY_VAR="Hello"
+echo $MY_VAR
+
+# Export for child processes
+export MY_VAR="World"
+```
+
+**Important variables:**
+* `$HOME` → Your home directory
+* `$PATH` → Where to find commands
+* `$PWD` → Current directory
+* `$OLDPWD` → Previous directory
+* `$USER` → Your username
+* `$SHELL` → Your default shell
+
+<!-- end_slide -->
+
+## man - Manual Pages
+
+**The best documentation:**
+
+```bash
+# Read manual for ls
+man ls
+
+# Manual for chmod
+man chmod
+
+# Search man pages
+man -k search_term
+
+# Short description
+whatis ls
+```
+
+**Navigation in man pages:**
+* `Space` → Next page
+* `b` → Previous page
+* `/pattern` → Search
+* `n` → Next match
+* `q` → Quit
+
+**Sections:**
+1. User commands
+2. System calls
+3. Library functions
+4. Special files
+5. File formats
+6. Games
+7. Miscellaneous
+8. System admin commands
+
+<!-- end_slide -->
+
+## Getting Help
+
+**Multiple ways to learn:**
+
+```bash
+# 1. Manual pages
+man command
+
+# 2. Info pages (more detailed)
+info command
+
+# 3. Built-in help
+help cd
+help export
+
+# 4. Command help flag
+ls --help
+grep --help
+chmod --help
+
+# 5. Quick description
+whatis command
+
+# 6. Search man pages
+apropos search_term
+man -k search_term
+```
+
+**Example:**
+```bash +exec
+echo "=== Getting help for ls ==="
+ls --help 2>&1 | head -5
+```
+
+<!-- end_slide -->
+
+# Part 11: Best Practices
+
+## Command-Line Best Practices
+
+**1. Always check before destructive operations:**
+```bash
+# Bad
+rm -rf *
+
+# Good
+ls -la  # Check first
+rm -i important_file.txt  # Use interactive mode
+```
+
+**2. Use absolute paths in scripts:**
+```bash
+# Bad
+cd ../../../dir
+
+# Good
+cd /home/user/projects/dir
+```
+
+**3. Quote variables:**
+```bash
+# Bad
+rm $FILE
+
+# Good
+rm "$FILE"
+```
+
+<!-- end_slide -->
+
+## Safety Tips
+
+**Dangerous commands to avoid:**
+
+```bash
+# NEVER RUN THESE!
+rm -rf /
+rm -rf /*
+chmod -R 777 /
+dd if=/dev/zero of=/dev/sda  # Wipes disk!
+:(){ :|:& };:  # Fork bomb - crashes system
+```
+
+**Safe practices:**
+* Always use `ls` before `rm`
+* Use `rm -i` for important files
+* Test regex patterns with `echo` first
+* Make backups before major changes
+* Use `--dry-run` when available
+* Read the man page if unsure
+
+<!-- end_slide -->
+
+## Efficiency Tips
+
+**Work smarter:**
+
+**1. Use command history:**
+```bash
+history | grep docker
+!number  # Run command from history
+!!  # Run last command
+```
+
+**2. Create aliases for common tasks:**
+```bash
+alias ll='ls -la'
+alias gs='git status'
+alias ..='cd ..'
+```
+
+**3. Use tab completion extensively**
+
+**4. Learn keyboard shortcuts:**
+* `Ctrl+R` - Search history
+* `Ctrl+A/E` - Start/end of line
+* `Ctrl+U/K` - Delete line
+
+**5. Combine commands:**
+```bash
+mkdir project && cd project && touch README.md
+```
+
+<!-- end_slide -->
+
+## Common Mistakes to Avoid
+
+**Beginners often do:**
+
+❌ **Not understanding `./`**
+```bash
+script.sh  # Won't work
+./script.sh  # Correct
+```
+
+❌ **Forgetting permissions**
+```bash
+./script.sh  # Permission denied
+chmod +x script.sh && ./script.sh  # Correct
+```
+
+❌ **Mixing up redirection**
+```bash
+command > file 2>1  # Wrong (creates file named '1')
+command > file 2>&1  # Correct
+```
+
+❌ **Not quoting file names with spaces**
+```bash
+cat My File.txt  # Wrong
+cat "My File.txt"  # Correct
+```
+
+<!-- end_slide -->
+
+## Learning Resources
+
+**Continue your Linux journey:**
+
+**Documentation:**
+* `man` pages - Built-in reference
+* `tldr` - Simplified man pages
+* Linux Documentation Project (tldp.org)
+
+**Practice:**
+* OverTheWire.org - Bandit wargame
+* HackerRank Linux Shell
+* LeetCode Shell problems
+
+**Communities:**
+* r/linux4noobs (Reddit)
+* Unix & Linux Stack Exchange
+* Linux Questions forum
+
+**Books:**
+* "The Linux Command Line" by William Shotts
+* "How Linux Works" by Brian Ward
+
+<!-- end_slide -->
+
+## Quick Command Reference
+
+**Essential commands summary:**
+
+| Category | Commands |
+|----------|----------|
+| **Navigation** | `pwd`, `cd`, `ls` |
+| **Files** | `touch`, `cp`, `mv`, `rm`, `mkdir` |
+| **Viewing** | `cat`, `less`, `head`, `tail` |
+| **Search** | `grep`, `find`, `locate` |
+| **Process** | `ps`, `top`, `kill`, `jobs` |
+| **Permissions** | `chmod`, `chown`, `ls -l` |
+| **Text** | `wc`, `sort`, `uniq`, `cut`, `tr` |
+| **System** | `df`, `du`, `free`, `uname` |
+| **Help** | `man`, `--help`, `whatis` |
+| **Network** | `ping`, `curl`, `wget`, `ssh` |
+
+<!-- end_slide -->
+
+## Practice Exercises
+
+**Try these on your own:**
+
+**Exercise 1:** File Management
+* Create a directory structure for a project
+* Create files in different directories
+* Copy and move files between directories
+* Set appropriate permissions
+
+**Exercise 2:** Text Processing
+* Download a text file
+* Count lines, words, characters
+* Find specific patterns
+* Sort and remove duplicates
+
+**Exercise 3:** Scripting
+* Write a script to backup a directory
+* Add error checking
+* Make it executable
+* Schedule with cron
+
+<!-- end_slide -->
+
+# Conclusion
+
+## What We Covered Today
+
+✅ **Linux filesystem structure**
+✅ **Navigation and file management**
+✅ **Viewing and editing files**
+✅ **Searching and finding**
+✅ **Permissions and ownership**
+✅ **Text processing**
+✅ **Pipes and redirection**
+✅ **Real-world examples**
+
+**Next steps:**
+* Practice daily
+* Build small projects
+* Read man pages
+* Join Linux communities
+* Keep learning!
+
+<!-- end_slide -->
+
+
+# Mastering the Linux CLI
+
+**Permissions | Shebang | Streams | Pipes | Packages | Text Processing**
+
+<!-- pause -->
+
+Permissions, streams, pipes, packages and your first script — the foundations of the cli that power everything.
+
+<!-- pause -->
+
+> "Those who don't understand Unix are condemned to reinvent it, poorly."
+
+<!-- end_slide -->
+
+# Agenda
+
+**Core:**
+1. Everything is a File
+2. Permissions & chmod
+3. Shebang
+4. Streams & Redirection
+5. Pipes
+6. grep & Text Tools
+
+<!-- pause -->
+
+**Power Tools:**
+7. Package Management
+8. Aliases & .bashrc
+9. Networking & Disk
+10. CLI Tricks
+
+<!-- end_slide -->
+
+# Part 1: Everything is a File
+
+![image:width:70%](images/fd_diagram.png)
+
+<!-- pause -->
+
+In Unix, **everything** is represented as a file — even your keyboard and screen.
+This means the same tools work on files, devices, and streams.
+
+| FD | Name   | Default  |
+|----|--------|----------|
+| 0  | stdin  | keyboard |
+| 1  | stdout | terminal |
+| 2  | stderr | terminal |
+
+**Key points:**
+- File descriptors are just numbers (0, 1, 2)
+- Every process starts with these 3 open
+- You can redirect them anywhere
+
+<!-- end_slide -->
+
+# Demo: File Descriptors
+
+```bash +exec
+ls -la /dev/stdin /dev/stdout /dev/stderr
+```
+
+<!-- pause -->
+
+```bash +exec
+ls -la /proc/$$/fd
+```
+
+<!-- end_slide -->
+
+# Part 2: Permissions
+
+Every file has an **owner**, a **group**, and **permission bits**.
+This is how Linux controls who can access what.
+
+```
+-rwxr-xr--
+│└┬┘└┬┘└┬┘
+│ │  │  └── others
+│ │  └───── group
+│ └──────── user
+└────────── type
+```
+
+```
+   ┌─── type: - file, d dir, l link
+   │
+   │  ┌─── user (owner)
+   │  │
+   │  │     ┌─── group
+   │  │     │
+   │  │     │     ┌─── others
+   │  │     │     │
+   ▼  ▼     ▼     ▼
+   -  rwx   r-x   r--
+      │││   │││   │││
+      │││   │││   └└└── r=4, w=0, x=0 = 4
+      │││   └└└──────── r=4, w=0, x=1 = 5
+      └└└────────────── r=4, w=2, x=1 = 7
+                       ═══════════════════
+                       Total: 754
+```
+
+<!-- end_slide -->
+
+# Permission Values
+
+| Perm | Value | Meaning |
+|------|-------|---------|
+| r    | 4     | read    |
+| w    | 2     | write   |
+| x    | 1     | execute |
+
+<!-- pause -->
+
+**Directory permissions are different!**
+- `r` = can list contents
+- `w` = can create/delete files
+- `x` = can enter (`cd`)
+
+**Common mistakes:**
+- `chmod 777` = security nightmare
+- Forgetting `+x` on scripts
+
+<!-- end_slide -->
+
+# Demo: Permissions
+
+```bash +exec
+ls -la /etc/passwd
+```
+
+<!-- pause -->
+
+```bash +exec
+stat /etc/passwd
+```
+
+<!-- end_slide -->
+
+# Part 3: chmod
+
+**Symbolic:** `chmod u+x file`
+
+**Octal:** `chmod 755 file`
+
+<!-- pause -->
+
+| Pattern | Octal | Meaning |
+|---------|-------|---------|
+| rwxr-xr-x | 755 | Scripts |
+| rw-r--r-- | 644 | Files |
+| rw------- | 600 | Private |
+
+**Also useful:**
+- `chown user file` — change owner
+- `chgrp group file` — change group
+
+<!-- end_slide -->
+
+# Demo: chmod
+
+```bash +exec
+touch /tmp/test.sh
+chmod 755 /tmp/test.sh
+ls -la /tmp/test.sh
+```
+
+<!-- pause -->
+
+```bash +exec
+chmod 600 /tmp/test.sh
+ls -la /tmp/test.sh
+```
+
+<!-- end_slide -->
+
+# Part 4: Shebang
+
+The first line of a script tells the kernel **which interpreter** to use.
+Without it, the system doesn't know how to run your code.
+
+```
+  You run:  ./script.sh
+                │
+                ▼
+  ┌─────────────────────────────┐
+  │  Kernel reads first bytes  │
+  │      sees: #!/bin/bash     │
+  └─────────────────────────────┘
+                │
+                ▼
+  Kernel executes:  /bin/bash ./script.sh
+```
+
+<!-- pause -->
+
+```bash
+#!/bin/bash           # Hardcoded
+#!/usr/bin/env bash   # Portable
+```
+
+**Key points:**
+- File extension doesn't matter — shebang decides
+- `env` searches PATH for the interpreter
+- Always use a shebang for portability
+
+<!-- end_slide -->
+
+# Demo: Shebang
+
+```bash +exec
+cat > /tmp/test.sh << 'EOF'
+#!/bin/bash
+echo "Running in: $BASH"
+EOF
+chmod +x /tmp/test.sh
+/tmp/test.sh
+```
+
+<!-- end_slide -->
+
+# Part 5: Streams & Redirection
+
+By default, output goes to your terminal. But you can **redirect** it anywhere.
+Errors (stderr) and output (stdout) are separate streams.
+
+| Operator | What |
+|----------|------|
+| `>`  | stdout → file (overwrite) |
+| `>>` | stdout → file (append) |
+| `2>` | stderr → file |
+| `&>` | both → file |
+| `<`  | file → stdin |
+
+**Key points:**
+- `>` overwrites, `>>` appends
+- stderr (2) and stdout (1) are separate
+- Order matters: `2>&1` must come after `>`
+
+<!-- end_slide -->
+
+# Demo: Redirection
+
+```bash +exec
+echo "hello" > /tmp/out.txt
+cat /tmp/out.txt
+```
+
+<!-- pause -->
+
+```bash +exec
+ls /fake 2>/dev/null && echo "Success" || echo "Error hidden"
+```
+
+<!-- end_slide -->
+
+# /dev/null: The Black Hole
+
+`/dev/null` is a special file that **discards everything** written to it.
+
+<!-- pause -->
+
+```
+       ┌─────────────┐
+data ──▶│  /dev/null  │──▶ (nothing)
+       └─────────────┘
+```
+
+<!-- pause -->
+
+**Common uses:**
+
+```bash +exec
+# Silence errors
+ls /nonexistent 2>/dev/null
+
+# Discard all output
+command &>/dev/null
+
+# Empty a file
+cat /dev/null > /tmp/out.txt && echo "File emptied!"
+```
+
+<!-- end_slide -->
+
+# Part 6: Pipes
+
+```
+  ┌───────┐         ┌────────────────┐         ┌───────┐
+  │ cmd1  │ stdout  │ kernel buffer  │  stdin  │ cmd2  │
+  │       │────────▶│   (pipe)       │────────▶│       │
+  └───────┘         └────────────────┘         └───────┘
+```
+
+<!-- pause -->
+
+```
+stdout of cmd1 → stdin of cmd2
+```
+
+**Key points:**
+- `|` connects stdout to stdin
+- Build complex operations from simple tools
+- Data flows left to right
+
+<!-- end_slide -->
+
+# Demo: Building Pipelines
+
+```bash +exec
+cat /etc/passwd | head -3
+```
+
+<!-- pause -->
+
+```bash +exec
+cat /etc/passwd | head -3 | cut -d: -f1
+```
+
+<!-- pause -->
+
+```bash +exec
+cat /etc/passwd | head -3 | cut -d: -f1 | sort
+```
+
+<!-- end_slide -->
+
+# The Unix Philosophy
+
+```
+  ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐
+  │ cat  │──▶│ grep │──▶│ sort │──▶│ uniq │──▶│ head │
+  └──────┘   └──────┘   └──────┘   └──────┘   └──────┘
+     │          │          │          │          │
+     ▼          ▼          ▼          ▼          ▼
+   read      filter      order     dedupe      limit
+```
+
+<!-- pause -->
+
+> "Write programs that do one thing well.
+> Write programs to work together."
+
+<!-- end_slide -->
+
+# Part 7: grep
+
+**G**lobal **R**egular **E**xpression **P**rint
+
+| Flag | What |
+|------|------|
+| `-i` | case insensitive |
+| `-n` | line numbers |
+| `-r` | recursive |
+| `-v` | invert match |
+| `-c` | count |
+
+**Pattern:** `cat | grep | sort | uniq -c | sort -nr | head`
+
+<!-- end_slide -->
+
+# Demo: grep
+
+```bash +exec
+grep "root" /etc/passwd
+```
+
+<!-- pause -->
+
+```bash +exec
+grep -v "bash" /etc/passwd | head -5
+```
+
+<!-- end_slide -->
+
+# Text Tools Cheatsheet
+
+| Tool | What |
+|------|------|
+| `head -n` | first n lines |
+| `tail -n` | last n lines |
+| `tail -f` | follow file |
+| `wc -l` | count lines |
+| `sort` | sort lines |
+| `uniq -c` | count unique |
+| `cut -d: -f1` | extract field |
+| `tr A-Z a-z` | translate |
+
+<!-- end_slide -->
+
+# Demo: Word Frequency Pipeline
+
+```bash +exec
+echo "the quick fox jumps over the lazy fox the" > /tmp/words.txt
+cat /tmp/words.txt | tr ' ' '\n' | sort | uniq -c | sort -nr
+```
+
+<!-- end_slide -->
+
+# Part 7: Package Management
+
+Linux has **built-in package managers** \u2014 no need to download from random websites.
+Packages come from trusted repositories maintained by your distro.
+
+```bash
+sudo apt update
+sudo apt install <package>
+sudo apt remove <package>
+sudo apt search <term>
+```
+
+<!-- end_slide -->
+
+# Demo: Fun Packages
+
+```bash +exec
+fortune 2>/dev/null | cowsay 2>/dev/null | head -15 || echo "Install: sudo apt install fortune cowsay"
+```
+
+<!-- pause -->
+
+```bash +exec
+neofetch 2>/dev/null || echo "Install: sudo apt install neofetch"
+```
+
+<!-- end_slide -->
+
+# More Fun Terminal Tools
+
+**Install these for fun:**
+
+```bash
+sudo apt install cmatrix sl figlet toilet lolcat htop
+```
+
+<!-- pause -->
+
+| Package | What it does |
+|---------|--------------|
+| `cmatrix` | Matrix rain animation |
+| `sl` | Steam locomotive (typo punishment) |
+| `figlet` | ASCII art text |
+| `toilet` | Colored ASCII text |
+| `htop` | Beautiful process viewer |
+| `bat` | Better cat with syntax highlighting |
+
+<!-- end_slide -->
+
+# Demo: ASCII Art Text
+
+```bash +exec
+figlet "Linux" 2>/dev/null || echo "Install: sudo apt install figlet"
+```
+
+<!-- pause -->
+
+```bash +exec
+echo "GDG Linux Workshop" | figlet -f small 2>/dev/null || echo "Install figlet"
+```
+
+<!-- end_slide -->
+
+# Part 8: Aliases & .bashrc
+
+Aliases are **shortcuts** for commands you type often.
+Add them to `~/.bashrc` to make them permanent.
+
+```bash
+alias ll='ls -lah'
+alias ..='cd ..'
+alias update='sudo apt update && sudo apt upgrade'
+```
+
+<!-- pause -->
+
+**Reload:** `source ~/.bashrc`
+
+<!-- end_slide -->
+
+# Part 9: Networking
+
+Check connectivity and fetch data from the command line.
+
+```bash +exec
+ping -c 2 google.com 2>/dev/null || echo "Network restricted"
+```
+
+<!-- pause -->
+
+```bash +exec
+curl -s ifconfig.me 2>/dev/null && echo "" || echo "No curl"
+```
+
+<!-- end_slide -->
+
+# Part 10: Disk
+
+Know how much space you have and what's using it.
+
+```bash +exec
+df -h | head -5
+```
+
+<!-- pause -->
+
+```bash +exec
+du -sh /tmp 2>/dev/null
+```
+
+<!-- end_slide -->
+
+# Part 13: CLI Power Tricks
+
+| Trick | What |
+|-------|------|
+| `Ctrl+R` | reverse search history |
+| `!!` | repeat last command |
+| `sudo !!` | run last as sudo |
+| `$?` | exit code (0=success) |
+| `which` | find command location |
+
+<!-- end_slide -->
+
+# Demo: Exit Codes & Commands
+
+```bash +exec
+ls /etc/passwd && echo "Exit: $?"
+```
+
+<!-- pause -->
+
+```bash +exec
+ls /fake 2>/dev/null; echo "Exit: $?"
+```
+
+<!-- pause -->
+
+```bash +exec
+which bash && whereis bash
+```
+
+<!-- end_slide -->
+
+# Challenge 1: Permission Detective
+
+Create a file:
+- YOU can read/write
+- GROUP can read only
+- OTHERS: nothing
+
+<!-- pause -->
+
+What's the octal?
+
+<!-- pause -->
+
+```bash +exec
+touch /tmp/ch1.txt && chmod 640 /tmp/ch1.txt && ls -la /tmp/ch1.txt
+```
+
+<!-- end_slide -->
+
+# Challenge 2: Pipeline Builder
+
+Count `.conf` files in /etc
+
+<!-- pause -->
+
+```bash +exec
+ls /etc 2>/dev/null | grep "\.conf$" | wc -l
+```
+
+<!-- end_slide -->
+
+# Challenge 3: Shell Analysis
+
+Find top 3 most common shells in `/etc/passwd`
+
+<!-- pause -->
+
+```bash +exec
+cut -d: -f7 /etc/passwd | sort | uniq -c | sort -nr | head -3
+```
+
+<!-- end_slide -->
+
+# Challenge 4: Script From Scratch
+
+Create `greet.sh` with:
+- Proper shebang
+- Prints "Hello, $USER!"
+- Executable
+
+<!-- pause -->
+
+```bash +exec
+cat > /tmp/greet.sh << 'EOF'
+#!/bin/bash
+echo "Hello, $USER!"
+EOF
+chmod +x /tmp/greet.sh && /tmp/greet.sh
+```
+
+<!-- end_slide -->
+
+# Bonus: Build Your Own Pipeline
+
+**Task:** Create a one-liner that:
+
+1. Gets all usernames from `/etc/passwd`
+2. Sorts them alphabetically  
+3. Shows only the first 5
+
+**Hints:** `cut`, `sort`, `head`
+
+<!-- pause -->
+
+```bash +exec
+cut -d: -f1 /etc/passwd | sort | head -5
+```
+
+<!-- end_slide -->
+
+# Bonus: Live Log Simulator
+
+**Watch data flow in real-time:**
+
+```bash +exec
+# Generate fake log in background, watch it
+(for i in {1..5}; do echo "[$(date)] Event $i"; sleep 0.5; done) > /tmp/fake.log &
+sleep 0.5 && tail -f /tmp/fake.log &
+sleep 3 && kill %2 2>/dev/null
+wait 2>/dev/null
+cat /tmp/fake.log
+```
+
+<!-- pause -->
+
+**Real use:** `tail -f /var/log/syslog`
+
+<!-- end_slide -->
+
+# Quick Reference
+
+```
+chmod 755 file    # rwxr-xr-x
+chmod 644 file    # rw-r--r--
+chmod 600 file    # rw-------
+
+cmd > file        # stdout → file
+cmd 2> file       # stderr → file
+cmd &> file       # all → file
+
+cmd1 | cmd2       # pipe
+```
+
+<!-- end_slide -->
+
+# Key Takeaways
+
+1. **Everything is a file** — fd 0, 1, 2
+2. **Permissions** — rwx × ugo
+3. **Shebang** — kernel reads it
+4. **Redirection** — `>`, `2>`, `&>`
+5. **Pipes** — `|` chains commands
+6. **Text tools** — grep, sort, uniq, cut
+<!-- end_slide -->
+
+# What's Next: Shell Scripting
+
+You've already written your first script! Now imagine:
+
+⁠ bash
+#!/bin/bash
+
+# Variables
+NAME="Linux"
+
+# Conditionals
+if [ -f /etc/passwd ]; then
+    echo "Users: $(wc -l < /etc/passwd)"
+fi
+
+# Loops
+for user in $(cut -d: -f1 /etc/passwd | head -3); do
+    echo "Hello, $user"
+done
+ ⁠
+
+<!-- pause -->
+
+*Coming up next:* Variables, conditionals, loops, functions, and real automation.
+
+<!-- end_slide -->
+
+# Questions?
+
+**Resources:**
+- `man <command>`
+- `tldr <command>`
+- https://explainshell.com
+
+<!-- pause -->
+
+*"The command line is your friend."*
+
+<!-- end_slide -->
+
 
 =======
 # Shell Scripting
