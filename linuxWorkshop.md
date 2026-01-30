@@ -53,15 +53,11 @@ Logical flow from concepts to hands-on
 
 <!-- end_slide -->
 
-# What is Linux?
+**Is Linux an Operating System** - like Windows or macOS ???
 
 <!-- pause -->
 
-**Linux is an Operating System** - like Windows or macOS
-
-<!-- pause -->
-
-But more accurately:
+More accurately:
 
 <!-- incremental_lists: true -->
 
@@ -117,17 +113,6 @@ We'll break down each component
 * Provides security & permissions
 
 <!-- pause -->
-
-**Think of it as:**
-> The kernel is like a **restaurant manager** coordinating between customers (applications) and the kitchen (hardware)
-
-<!-- speaker_note:
-Kernel is the most privileged software
-Sits between apps and hardware
-Everything must go through the kernel
-No direct hardware access allowed
--->
-
 <!-- end_slide -->
 
 # What is an Operating System? 
@@ -160,13 +145,6 @@ Kernel + Shell + Utilities + Applications
 * **Shell** - Command interpreter
 * **Desktop Environment** - Graphical interface (optional)
 * **Applications** - Programs you use
-
-<!-- speaker_note:
-OS is everything working together
-Linux kernel + GNU tools = Linux OS
-Windows and Mac are complete packages
-Linux is modular - mix and match
--->
 
 <!-- end_slide -->
 
@@ -213,8 +191,6 @@ Together they make a complete system
 # Why Linux? 
 
 <!-- end_slide -->
-
-# Why Linux? (vs Windows/Mac) 
 
 <!-- pause -->
 
