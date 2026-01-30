@@ -1,6 +1,6 @@
 ---
-title: "Linux Essentials - Part 1"
-sub_title: "Introduction & Foundations "
+title: "Linux & Shell Scripting"
+sub_title: "Google Developers Groups"
 author: "GDG Workshop"
 theme:
   name: gruvbox-dark
@@ -20,12 +20,16 @@ options:
 # Linux Essentials
 
 ## Part 1: Foundations
+## Part 2: Linux Fundamentals
+## Part 3: Permissions & I/O
+## Part 4: Shell Scripting
 
-<!-- pause -->
+<!-- end_slide -->
+
 
 # What is Linux? 
 
-<!-- end_slide -->
+<!-- pause -->
 
 **Is Linux an Operating System** - like Windows or macOS ???
 
@@ -39,34 +43,9 @@ More accurately:
 * **GNU/Linux** = Complete operating system
 * **Linux Distributions** = Packaged versions (Ubuntu, Fedora, etc.)
 
-<!-- pause -->
-
-```mermaid
-graph TB
-    A[Linux] --> B{What does it include?}
-    B --> C[Kernel<br/>Hardware management]
-    B --> D[Shell & Tools<br/>User interaction]
-    B --> E[Applications<br/>Software you use]
-    
-    style C fill:#f96,stroke:#333,stroke-width:3px
-    style D fill:#9f9,stroke:#333
-    style E fill:#9cf,stroke:#333
-```
-
-<!-- speaker_note:
-Start with the big picture
-Linux powers most of the internet
-Free and open source
-We'll break down each component
--->
-
 <!-- end_slide -->
 
-<!-- jump_to_middle -->
-
-# Understanding Kernel & OS 
-
-<!-- end_slide -->
+**Understanding Kernel & OS** 
 
 # What is a Kernel? 
 
@@ -111,7 +90,7 @@ Kernel + Shell + Utilities + Applications
 └──────────────────────────────┘
 ```
 
-<!-- pause -->
+<!-- end_slide -->
 
 **Components:**
 * **Kernel** - Core system management
@@ -142,15 +121,13 @@ Kernel + Shell + Utilities + Applications
 
 <!-- end_slide -->
 
-<!-- jump_to_middle -->
-
 # Why Linux? 
 
 <!-- pause -->
 
-<!-- columns -->
+<!-- column_layout: [1, 1] -->
 
-<!-- column: 0.5 -->
+<!-- column: 0 -->
 
 ## **Free & Open**
 * No licensing costs
@@ -164,7 +141,7 @@ Kernel + Shell + Utilities + Applications
 * Less malware
 * Better permissions
 
-<!-- column: 0.5 -->
+<!-- column: 1 -->
 
 ##  **Powerful**
 * Runs for years without reboot
@@ -207,9 +184,9 @@ If you use the internet, you use Linux!
 
 **What You Can Do:**
 
-<!-- columns -->
+<!-- column_layout: [1, 1] -->
 
-<!-- column: 0.5 -->
+<!-- column: 0 -->
 
 * Web development
 * Python/Java/C++ programming
@@ -217,7 +194,7 @@ If you use the internet, you use Linux!
 * Cybersecurity
 * DevOps & Cloud
 
-<!-- column: 0.5 -->
+<!-- column: 1 -->
 
 * Server management
 * Docker & containers
@@ -274,9 +251,9 @@ Together = revolution
 
 # 1969: UNIX 
 
-<!-- columns -->
+<!-- column_layout: [1, 1] -->
 
-<!-- column: 0.5 -->
+<!-- column: 0 -->
 
 **The Innovation:**
 * Multi-user system
@@ -284,7 +261,7 @@ Together = revolution
 * Written in C (portable!)
 * Hierarchical file system
 
-<!-- column: 0.5 -->
+<!-- column: 1 -->
 
 **The Problem:**
 * Proprietary
@@ -308,9 +285,9 @@ Together = revolution
 
 <!-- pause -->
 
-<!-- columns -->
+<!-- column_layout: [1, 1] -->
 
-<!-- column: 0.5 -->
+<!-- column: 0 -->
 
 **What GNU Built:**
 * GCC compiler
@@ -318,7 +295,7 @@ Together = revolution
 * Core tools (ls, cp, mv)
 * Text editor (emacs)
 
-<!-- column: 0.5 -->
+<!-- column: 1 -->
 
 **What Was Missing:**
 * **The Kernel**
@@ -348,8 +325,6 @@ Now runs the world
 
 <!-- end_slide -->
 
-<!-- jump_to_middle -->
-
 # How WSL Makes Linux Work on Windows
 
 <!-- pause -->
@@ -362,28 +337,6 @@ Now runs the world
 <!-- pause -->
 
 **WSL Approach - Better!**
-
-```mermaid
-graph TB
-    subgraph Windows["Windows OS"]
-        subgraph WSL["WSL 2 Subsystem"]
-            A[Lightweight VM]
-            B[Real Linux Kernel]
-            C[Ubuntu/Linux Distro]
-        end
-        D[Windows Applications]
-        E[Windows Kernel]
-    end
-    
-    F[Your Hardware] --> E
-    E --> A
-    A --> B
-    B --> C
-    E --> D
-    
-    style WSL fill:#e3f2fd,stroke:#333,stroke-width:3px
-    style B fill:#c8e6c9,stroke:#333,stroke-width:2px
-```
 
 <!-- pause -->
 
@@ -402,36 +355,15 @@ Perfect for students who need both
 
 <!-- end_slide -->
 
-<!-- jump_to_middle -->
-
 # WSL Setup 
 
-<!-- end_slide -->
+
 
 # What is WSL?
 
 <!-- pause -->
 
 **WSL = Windows Subsystem for Linux**
-
-<!-- pause -->
-
-```mermaid
-graph TB
-    subgraph Windows["Windows 10/11"]
-        subgraph WSL["WSL Layer"]
-            A[Linux Kernel] --> B[Ubuntu/Debian/etc.]
-            B --> C[bash, apt, Linux tools]
-        end
-        D[Windows Apps] 
-    end
-    
-    E[You] -->|Use both| D
-    E -->|Use both| C
-    
-    style WSL fill:#e3f2fd,stroke:#333,stroke-width:2px
-    style A fill:#c8e6c9,stroke:#333,stroke-width:2px
-```
 
 <!-- pause -->
 
@@ -497,53 +429,7 @@ Username/password are for Linux only (separate from Windows)
 
 <!-- end_slide -->
 
-# Manual Setup (If Automatic Fails)
 
-<!-- pause -->
-
-## Step 1: Enable WSL Feature
-
-**Run in PowerShell (Admin):**
-
-```powershell
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-```
-
-<!-- pause -->
-
-## Step 2: Enable Virtual Machine Platform
-
-```powershell
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-```
-
-<!-- pause -->
-
-## Step 3: Restart Computer
-
-**Restart Windows now!**
-
-<!-- speaker_note:
-Use this method if wsl --install doesn't work
-Usually needed on older Windows 10 versions
-Both commands must complete successfully
-Don't skip the restart!
--->
-
-<!-- end_slide -->
-
-# Manual Setup (Continued)
-
-<!-- pause -->
-
-## Step 4: Download & Install WSL 2 Kernel
-
-**Visit:**
-```
-https://aka.ms/wsl2kernel
-```
-
-Download and install the update package
 
 <!-- pause -->
 
@@ -583,46 +469,6 @@ Choose Ubuntu if unsure - most popular and beginner-friendly
 First launch will take a minute to set up
 Username can be different from Windows username
 -->
-
-<!-- end_slide -->
-
-<!-- jump_to_middle -->
-
-# Ubuntu 
-
-<!-- end_slide -->
-
-# What is Ubuntu?
-
-<!-- pause -->
-
-**Ubuntu = A Linux Distribution**
-
-<!-- pause -->
-
-**What's a Distribution?**
-* Linux kernel + pre-selected software packages
-* Ready-to-use operating system
-* Different distros for different needs
-
-<!-- pause -->
-
-**Why Ubuntu?**
-<!-- incremental_lists: true -->
-* Most popular Linux distro
-* Beginner-friendly
-* Great documentation
-* Huge community support
-* Industry standard
-* Free and open source
-
-<!-- pause -->
-
-<!-- end_slide -->
-
-<!-- jump_to_middle -->
-
-# Terminal & Shell 
 
 <!-- end_slide -->
 
