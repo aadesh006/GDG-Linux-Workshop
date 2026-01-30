@@ -353,61 +353,6 @@ Now runs the world
 
 <!-- jump_to_middle -->
 
-# How Linux Works 
-
-<!-- end_slide -->
-
-# How Linux Works: Backend Architecture
-
-<!-- pause -->
-
-```mermaid
-graph TB
-    subgraph User["You"]
-        A[Type Command]
-    end
-    
-    subgraph Terminal["Terminal/Shell"]
-        B[bash interprets]
-    end
-    
-    subgraph Kernel["Linux Kernel"]
-        C[System Call Interface]
-        D[Process Manager]
-        E[Memory Manager]
-        F[File System]
-        G[Device Drivers]
-    end
-    
-    subgraph Hardware["Physical Hardware"]
-        H[CPU | RAM | Disk | Network]
-    end
-    
-    A --> B
-    B --> C
-    C --> D
-    C --> E
-    C --> F
-    C --> G
-    D --> H
-    E --> H
-    F --> H
-    G --> H
-    
-    style Kernel fill:#f3e5f5,stroke:#333,stroke-width:3px
-    style Hardware fill:#c8e6c9,stroke:#333,stroke-width:2px
-```
-
-<!-- speaker_note:
-This is the backend architecture of Linux
-Shell translates commands to system calls
-Kernel manages all hardware access
-Applications never touch hardware directly
-Protection and security built in
--->
-
-<!-- end_slide -->
-
 # How WSL Makes Linux Work on Windows
 
 <!-- pause -->
