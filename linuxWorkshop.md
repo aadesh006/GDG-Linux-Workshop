@@ -18,57 +18,331 @@ options:
 
 <!-- end_slide -->
 
-# Linux Essentials 🐧
+# Linux Essentials
 
 ## Part 1: Foundations
 
 <!-- pause -->
 
-**Today's Topics:**
+**Today's Journey:**
 
 <!-- incremental_lists: true -->
 
-1. Quick History: UNIX → GNU → Linux
-2. Understanding the Terms
-3. Why Linux Dominates
-4. GNU & Free Software
+1. What is Linux?
+2. Kernel vs Operating System
+3. Why Linux? (vs Windows/Mac)
+4. Why Linux as Students?
+5. History of Linux
+6. How Linux Works & WSL
+7. Setting Up WSL
+8. Ubuntu
+9. Terminal & Shell
+10. Let's Dive In!
 
 <!-- speaker_note:
 60-minute focused workshop
-Keep it concise and practical
-Emphasize key concepts only
+Start with fundamentals, build up to practice
+Logical flow from concepts to hands-on
 -->
 
 <!-- end_slide -->
 
-# The Evolution ⏱️
+<!-- jump_to_middle -->
+
+# What is Linux? 
+
+<!-- end_slide -->
+
+# What is Linux?
+
+<!-- pause -->
+
+**Linux is an Operating System** - like Windows or macOS
+
+<!-- pause -->
+
+But more accurately:
+
+<!-- incremental_lists: true -->
+
+* **Linux** = The kernel (core of the OS)
+* **GNU/Linux** = Complete operating system
+* **Linux Distributions** = Packaged versions (Ubuntu, Fedora, etc.)
+
+<!-- pause -->
+
+```mermaid
+graph TB
+    A[Linux] --> B{What does it include?}
+    B --> C[Kernel<br/>Hardware management]
+    B --> D[Shell & Tools<br/>User interaction]
+    B --> E[Applications<br/>Software you use]
+    
+    style C fill:#f96,stroke:#333,stroke-width:3px
+    style D fill:#9f9,stroke:#333
+    style E fill:#9cf,stroke:#333
+```
+
+<!-- speaker_note:
+Start with the big picture
+Linux powers most of the internet
+Free and open source
+We'll break down each component
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Understanding Kernel & OS 
+
+<!-- end_slide -->
+
+# What is a Kernel? 
+
+<!-- pause -->
+
+**The Kernel = The Core of the Operating System**
+
+<!-- pause -->
+
+**What it does:**
+
+<!-- incremental_lists: true -->
+
+* Manages hardware (CPU, RAM, disk)
+* Controls processes (which programs run)
+* Handles memory allocation
+* Manages file systems
+* Provides security & permissions
+
+<!-- pause -->
+
+**Think of it as:**
+> The kernel is like a **restaurant manager** coordinating between customers (applications) and the kitchen (hardware)
+
+<!-- speaker_note:
+Kernel is the most privileged software
+Sits between apps and hardware
+Everything must go through the kernel
+No direct hardware access allowed
+-->
+
+<!-- end_slide -->
+
+# What is an Operating System? 
+
+<!-- pause -->
+
+**Operating System = Complete System**
+
+Kernel + Shell + Utilities + Applications
+
+<!-- pause -->
+
+```text
+┌──────────────────────────────┐
+│  Applications (User Space)   │  ← Firefox, games, etc.
+├──────────────────────────────┤
+│  Shell & Utilities           │  ← bash, ls, cp, mv
+├──────────────────────────────┤
+│  Kernel                      │  ← Linux kernel
+├──────────────────────────────┤
+│  Hardware                    │  ← CPU, RAM, Disk
+└──────────────────────────────┘
+```
+
+<!-- pause -->
+
+**Components:**
+* **Kernel** - Core system management
+* **System utilities** - Basic commands and tools
+* **Shell** - Command interpreter
+* **Desktop Environment** - Graphical interface (optional)
+* **Applications** - Programs you use
+
+<!-- speaker_note:
+OS is everything working together
+Linux kernel + GNU tools = Linux OS
+Windows and Mac are complete packages
+Linux is modular - mix and match
+-->
+
+<!-- end_slide -->
+
+# Kernel vs Operating System
+
+<!-- pause -->
+
+**Kernel** = Just the core
+* Linux is technically just a kernel
+* ~30 million lines of code
+* Created by Linus Torvalds
+
+<!-- pause -->
+
+**Operating System** = Everything
+* Linux kernel + GNU tools + Desktop + Apps
+* Called "Linux" but technically "GNU/Linux"
+* Different "distributions" package it differently
+
+<!-- pause -->
+
+```mermaid
+graph LR
+    A[Linux Kernel<br/>15%] + B[GNU Tools<br/>30%] + C[Desktop<br/>20%] + D[Apps<br/>35%] = E[Complete Linux OS<br/>100%]
+    
+    style A fill:#f96,stroke:#333,stroke-width:3px
+    style B fill:#ff9,stroke:#333
+    style C fill:#9cf,stroke:#333
+    style D fill:#9f9,stroke:#333
+    style E fill:#c8e6c9,stroke:#333,stroke-width:3px
+```
+
+<!-- speaker_note:
+"Linux" commonly refers to the whole OS
+But technically it's just the kernel
+GNU provides most of the tools
+Together they make a complete system
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Why Linux? 
+
+<!-- end_slide -->
+
+# Why Linux? (vs Windows/Mac) 
+
+<!-- pause -->
+
+<!-- columns -->
+
+<!-- column: 0.5 -->
+
+## **Free & Open**
+* No licensing costs
+* Source code available
+* Modify anything
+* No vendor lock-in
+
+## **Secure**
+* Open source = peer reviewed
+* Fast security patches
+* Less malware
+* Better permissions
+
+<!-- column: 0.5 -->
+
+##  **Powerful**
+* Runs for years without reboot
+* Efficient resources
+* Scales to any size
+
+##  **Dominant**
+* 96% of web servers
+* 100% of supercomputers
+* Billions of Android phones
+* All major cloud platforms
+
+<!-- reset_layout -->
+
+<!-- speaker_note:
+Windows/Mac are proprietary and expensive
+Linux is free and customizable
+Most of the internet runs on Linux
+If you use the internet, you use Linux!
+-->
+
+<!-- end_slide -->
+
+# Why Linux as Students? 
+
+<!-- pause -->
+
+**Perfect for Learning:**
+
+<!-- incremental_lists: true -->
+
+1. **Free** - No cost for software
+2. **Learn How Computers Work** - See inside the system
+3. **Industry Standard** - Used in most tech companies
+4. **Career Skills** - Linux knowledge = job opportunities
+5. **Development** - Best environment for programming
+6. **Customizable** - Make it yours
+
+<!-- pause -->
+
+**What You Can Do:**
+
+<!-- columns -->
+
+<!-- column: 0.5 -->
+
+* Web development
+* Python/Java/C++ programming
+* Data science & ML
+* Cybersecurity
+* DevOps & Cloud
+
+<!-- column: 0.5 -->
+
+* Server management
+* Docker & containers
+* Git version control
+* Database management
+* Networking
+
+<!-- reset_layout -->
+
+<!-- speaker_note:
+Linux is essential for CS/IT students
+Most developer tools are built for Linux first
+Learning Linux = learning how software really works
+Companies hire Linux-skilled developers
+Free means experiment without limits
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# History of Linux 
+
+<!-- end_slide -->
+
+# The Evolution 
 
 ```mermaid
 timeline
     title From UNIX to Linux
     1969 : UNIX Born
          : Bell Labs
-         : Ken Thompson & Dennis Ritchie
+         : Multi-user system
     1983 : GNU Project
          : Richard Stallman
-         : Free UNIX tools
+         : Free software tools
     1991 : Linux Kernel
          : Linus Torvalds
          : "just a hobby"
     Today : Linux Everywhere
-          : Servers, Cloud, Android
           : Powers the Internet
+          : 96% of servers
 ```
 
 <!-- speaker_note:
-30-year journey in one slide
+Quick history - 30 years of evolution
 Each step solved a real problem
-Community-driven development
+UNIX was expensive → GNU made free tools
+GNU needed kernel → Linus made Linux
+Together = revolution
 -->
 
 <!-- end_slide -->
 
-# 1969: UNIX 🌟
+# 1969: UNIX 
 
 <!-- columns -->
 
@@ -91,14 +365,6 @@ Community-driven development
 <!-- reset_layout -->
 
 <!-- pause -->
-
-> "Do one thing and do it well" - UNIX Philosophy
-
-<!-- speaker_note:
-UNIX was revolutionary but expensive
-$50,000+ for hardware + license
-This created demand for free alternative
--->
 
 <!-- end_slide -->
 
@@ -129,15 +395,9 @@ This created demand for free alternative
 
 <!-- reset_layout -->
 
-<!-- speaker_note:
-GNU had everything except the kernel
-This was the missing piece
-Linus would solve this problem
--->
-
 <!-- end_slide -->
 
-# 1991: Linux is Born! 🎉
+# 1991: Linux is Born! 
 
 **August 25, 1991 - Linus Torvalds:**
 
@@ -155,8 +415,6 @@ graph LR
 ```
 
 <!-- pause -->
-
-**The Perfect Match:**
 * Linux provided the kernel
 * GNU provided everything else
 * Together = Full operating system
@@ -171,336 +429,119 @@ Now runs the world
 
 <!-- jump_to_middle -->
 
-# Understanding the Terms 📚
+# How Linux Works 
 
 <!-- end_slide -->
 
-# GUI vs CLI
-
-<!-- columns -->
-
-<!-- column: 0.5 -->
-
-## GUI
-**Graphical User Interface**
-
-* Visual: windows, icons
-* Point and click
-* Easy to learn
-* Limited automation
-
-<!-- column: 0.5 -->
-
-## CLI
-**Command Line Interface**
-
-* Text-based
-* Type commands
-* Steeper learning
-* **Powerful automation**
-
-<!-- reset_layout -->
-
-<!-- pause -->
-
-```mermaid
-graph LR
-    A[GUI] -->|Good for| B[Visual tasks<br/>Beginners]
-    C[CLI] -->|Good for| D[Automation<br/>Servers<br/>Scripts]
-    
-    style B fill:#9cf,stroke:#333
-    style D fill:#9f9,stroke:#333
-```
-
-<!-- speaker_note:
-Not either/or - use both!
-GUI for visual work
-CLI for automation and remote access
--->
-
-<!-- end_slide -->
-
-# Terminal vs Shell
-
-<!-- pause -->
-
-**Terminal** = The window (app you see)
-* GNOME Terminal, iTerm2, Windows Terminal
-* Just displays input/output
-
-<!-- pause -->
-
-**Shell** = The interpreter (runs inside terminal)
-* bash, zsh, fish
-* Translates your commands for the kernel
+# How Linux Works: Backend Architecture
 
 <!-- pause -->
 
 ```mermaid
 graph TB
-    A[Terminal Emulator<br/>The window] --> B[Shell bash<br/>The interpreter]
-    B --> C[Kernel<br/>The executor]
-    
-    style A fill:#e3f2fd,stroke:#333
-    style B fill:#fff3e0,stroke:#333
-    style C fill:#f3e5f5,stroke:#333,stroke-width:2px
-```
-
-<!-- speaker_note:
-Terminal = display layer
-Shell = logic layer
-Often confused but different!
--->
-
-<!-- end_slide -->
-
-# The Complete Flow
-
-```mermaid
-sequenceDiagram
-    participant You
-    participant Terminal
-    participant Shell
-    participant Kernel
-    participant Hardware
-    
-    You->>Terminal: Type: ls -la
-    Terminal->>Shell: Send command
-    Shell->>Shell: Parse command
-    Shell->>Kernel: System call
-    Kernel->>Hardware: Read disk
-    Hardware-->>Kernel: File list
-    Kernel-->>Shell: Return data
-    Shell-->>Terminal: Format output
-    Terminal-->>You: Display files
-```
-
-<!-- speaker_note:
-This is what happens when you type a command
-Multiple layers working together
-Each has a specific role
--->
-
-<!-- end_slide -->
-
-# Kernel vs Operating System
-
-<!-- pause -->
-
-**Kernel** = Core of the OS
-* Manages hardware (CPU, RAM, disk)
-* Process scheduling
-* Memory management
-* Device drivers
-
-<!-- pause -->
-
-**Operating System** = Complete system
-* Kernel + Shell + Utilities + Applications
-
-<!-- pause -->
-
-```mermaid
-graph TB
-    subgraph OS["Complete Operating System"]
-        A[Applications<br/>Firefox, vim] --> B[Shell & Tools<br/>bash, ls, cp]
-        B --> C[Kernel<br/>Linux]
-        C --> D[Hardware<br/>CPU, RAM, Disk]
+    subgraph User["You"]
+        A[Type Command]
     end
     
-    style C fill:#f96,stroke:#333,stroke-width:3px
+    subgraph Terminal["Terminal/Shell"]
+        B[bash interprets]
+    end
+    
+    subgraph Kernel["Linux Kernel"]
+        C[System Call Interface]
+        D[Process Manager]
+        E[Memory Manager]
+        F[File System]
+        G[Device Drivers]
+    end
+    
+    subgraph Hardware["Physical Hardware"]
+        H[CPU | RAM | Disk | Network]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    C --> E
+    C --> F
+    C --> G
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    
+    style Kernel fill:#f3e5f5,stroke:#333,stroke-width:3px
+    style Hardware fill:#c8e6c9,stroke:#333,stroke-width:2px
 ```
 
 <!-- speaker_note:
-"Linux" technically = just the kernel
-"Linux OS" = Linux kernel + GNU tools + apps
-Most people just say "Linux"
--->
-**Key Point:** Applications can't touch hardware directly!
-* Must ask kernel via system calls
-* Kernel validates and executes safely
-
-<!-- speaker_note:
-Kernel sits between apps and hardware
-Provides protection and security
-System calls are the only way to request services
+This is the backend architecture of Linux
+Shell translates commands to system calls
+Kernel manages all hardware access
+Applications never touch hardware directly
+Protection and security built in
 -->
 
 <!-- end_slide -->
 
-
-# Why Linux is the Best 🏆
-
-<!-- end_slide -->
-
-# Linux Dominates Everything
+# How WSL Makes Linux Work on Windows
 
 <!-- pause -->
 
-```mermaid
-pie title "Where Linux Runs (2024)"
-    "Web Servers" : 96.3
-    "Supercomputers" : 100
-    "Mobile (Android)" : 70
-    "Cloud Infrastructure" : 90
-    "IoT Devices" : 80
-```
+**Traditional Approach:**
+* Dual boot (separate partitions)
+* Virtual Machine (VMware, VirtualBox)
+* Slow and resource heavy
 
 <!-- pause -->
 
-**The Stats:**
-* **96.3%** of top web servers
-* **100%** of top 500 supercomputers
-* **Billions** of Android devices
-* AWS, Google Cloud, Azure
-* Your router, smart TV, car
-
-<!-- pause -->
-
-> **If you used the internet today, you used Linux!**
-
-<!-- speaker_note:
-Linux literally runs the modern world
-Even Microsoft runs Linux on Azure!
-Android = Linux kernel + Google's userspace
--->
-
-<!-- end_slide -->
-
-# Why Linux Wins
-
-<!-- pause -->
-
-<!-- columns -->
-
-<!-- column: 0.5 -->
-
-## 💰 Free & Open
-* No licensing costs
-* Source code available
-* Modify as needed
-* No vendor lock-in
-
-<!-- pause -->
-
-## 🔒 Secure
-* Open source review
-* Fast security patches
-* Less malware
-* Granular permissions
-
-<!-- column: 0.5 -->
-
-<!-- pause -->
-
-## ⚡ Powerful
-* Runs for years without reboot
-* Efficient resource usage
-* Scales from Pi to supercomputers
-
-<!-- pause -->
-
-## 🎨 Customizable
-* Change anything
-* Pick your desktop
-* Build your own distro
-
-<!-- reset_layout -->
-
-<!-- speaker_note:
-Compare costs: Windows Server = $6000+, Linux = $0
-Security: thousands of eyes reviewing code
-Performance: servers run for years
-Flexibility: make it exactly what you want
--->
-
-<!-- end_slide -->
-
-# The Numbers
-
-<!-- pause -->
-
-**Development Scale:**
-* 30+ million lines of code
-* 20,000+ contributors worldwide
-* 15,000+ companies involved
-* New kernel every 9-10 weeks
-
-<!-- pause -->
-
-**Real-World Usage:**
-* Google, Facebook, Amazon - all Linux
-* Stock exchanges, banks - Linux
-* NASA, SpaceX - Linux
-* Hollywood render farms - Linux
-
-<!-- pause -->
+**WSL Approach - Better!**
 
 ```mermaid
 graph TB
-    A[Linux] --> B[Powers the Internet]
-    A --> C[Runs Supercomputers]
-    A --> D[Inside Android Phones]
-    A --> E[Cloud Infrastructure]
-    A --> F[Scientific Research]
-    A --> G[Financial Systems]
+    subgraph Windows["Windows OS"]
+        subgraph WSL["WSL 2 Subsystem"]
+            A[Lightweight VM]
+            B[Real Linux Kernel]
+            C[Ubuntu/Linux Distro]
+        end
+        D[Windows Applications]
+        E[Windows Kernel]
+    end
     
-    style A fill:#f96,stroke:#333,stroke-width:4px
-```
-
-<!-- speaker_note:
-Most actively developed OS in history
-Contributions from Intel, Google, Red Hat, etc.
-Free software powering trillion-dollar industries
--->
-
-<!-- end_slide -->
-
-# GNU & Free Software 🦬
-
-<!-- end_slide -->
-
-# GNU + Linux: The Perfect Match
-
-<!-- pause -->
-
-```mermaid
-flowchart LR
-    A[GNU Project<br/>1983] -->|Built| B[Compiler<br/>Shell<br/>Tools]
-    C[Linux<br/>1991] -->|Built| D[Kernel]
+    F[Your Hardware] --> E
+    E --> A
+    A --> B
+    B --> C
+    E --> D
     
-    B --> E{Combine}
-    D --> E
-    
-    E --> F[Complete Free OS<br/>GNU/Linux]
-    
-    style A fill:#fff3e0,stroke:#333,stroke-width:2px
-    style C fill:#e3f2fd,stroke:#333,stroke-width:2px
-    style F fill:#c8e6c9,stroke:#333,stroke-width:4px
+    style WSL fill:#e3f2fd,stroke:#333,stroke-width:3px
+    style B fill:#c8e6c9,stroke:#333,stroke-width:2px
 ```
 
 <!-- pause -->
 
-**Why "GNU/Linux"?**
-* GNU provided: compiler, shell, tools (30+ years of work)
-* Linux provided: kernel (the missing piece)
-* Together: complete operating system
-
-<!-- pause -->
-
-**But we say "Linux" because:**
-* Shorter and catchier
-* Kernel was the crucial final piece
-* Common usage
+**WSL Magic:**
+* Runs real Linux kernel inside Windows
+* Fast (uses lightweight virtualization)
+* Shares files between Windows & Linux
+* No reboot needed!
 
 <!-- speaker_note:
-Richard Stallman insists on "GNU/Linux"
-Technically correct, but "Linux" stuck
-Both contributions were essential
-Together they changed the world
+WSL 2 runs actual Linux kernel via Hyper-V
+Not emulation - real Linux system
+Best of both worlds: Windows GUI + Linux power
+Perfect for students who need both
 -->
 
 <!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# WSL Setup 
+
+<!-- end_slide -->
+
 # What is WSL?
 
 <!-- pause -->
@@ -508,6 +549,7 @@ Together they changed the world
 **WSL = Windows Subsystem for Linux**
 
 <!-- pause -->
+
 ```mermaid
 graph TB
     subgraph Windows["Windows 10/11"]
@@ -537,7 +579,7 @@ graph TB
 
 **Two Versions:**
 * **WSL 1:** Translation layer (faster file access)
-* **WSL 2:** Real Linux kernel (better compatibility) ⭐ Recommended
+* **WSL 2:** Real Linux kernel (better compatibility)  Recommended
 
 <!-- speaker_note:
 WSL lets Windows users run Linux natively
@@ -553,9 +595,10 @@ Files accessible from both Windows and Linux
 
 <!-- pause -->
 
-## Quick Setup (Windows 11 / Windows 10 2004+)
+## Method 1: Automatic Setup  (Recommended)
 
 **One Command (PowerShell as Admin):**
+
 ```powershell
 wsl --install
 ```
@@ -567,42 +610,178 @@ wsl --install
 1. Enables WSL feature
 2. Enables Virtual Machine Platform
 3. Installs latest Linux kernel
-4. **Installs Ubuntu by default**
+4. Installs Ubuntu by default
 5. Restarts your computer
 
 <!-- pause -->
 
 ## After Restart:
-
 <!-- incremental_lists: true -->
 1. Ubuntu will auto-launch
 2. Create your Linux username
 3. Set your password
-4. You're in Linux! 🎉
+4. You're in Linux! 
 
 <!-- speaker_note:
-That's it! One command for modern Windows.
-After restart, Ubuntu terminal opens automatically.
-Username/password are for Linux only (separate from Windows).
-You now have full Linux environment.
+Method 1 works on Windows 10 (version 2004+) and Windows 11
+This is the easiest and recommended method
+After restart, Ubuntu terminal opens automatically
+Username/password are for Linux only (separate from Windows)
 -->
 
 <!-- end_slide -->
-# Next Up: Hands-On! 🚀
 
-## Part 2: File System & Navigation
+# Manual Setup (If Automatic Fails)
 
 <!-- pause -->
 
-**Get Ready To:**
-* Explore the Linux file system
-* Master essential commands
-* Navigate like a pro
+## Step 1: Enable WSL Feature
+
+**Run in PowerShell (Admin):**
+
+```powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+```
+
+<!-- pause -->
+
+## Step 2: Enable Virtual Machine Platform
+
+```powershell
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+<!-- pause -->
+
+## Step 3: Restart Computer
+
+**Restart Windows now!**
 
 <!-- speaker_note:
-Break time if needed
-Make sure everyone has terminal access
-Next section is practical
+Use this method if wsl --install doesn't work
+Usually needed on older Windows 10 versions
+Both commands must complete successfully
+Don't skip the restart!
 -->
+
+<!-- end_slide -->
+
+# Manual Setup (Continued)
+
+<!-- pause -->
+
+## Step 4: Download & Install WSL 2 Kernel
+
+**Visit:**
+```
+https://aka.ms/wsl2kernel
+```
+
+Download and install the update package
+
+<!-- pause -->
+
+## Step 5: Set WSL 2 as Default
+
+**Run in PowerShell (Admin):**
+
+```powershell
+wsl --set-default-version 2
+```
+
+<!-- pause -->
+
+## Step 6: Install Linux Distribution
+
+```powershell
+# Install Ubuntu (recommended for beginners)
+wsl --install -d Ubuntu
+
+# Or choose another:
+wsl --list --online    # See all available distros
+wsl --install -d Debian
+wsl --install -d Kali-Linux
+```
+
+<!-- pause -->
+
+## Step 7: Launch & Setup
+
+* Start menu → "Ubuntu"
+* Create username and password
+* Done! 
+
+<!-- speaker_note:
+After kernel update, WSL 2 becomes default for new installs
+Choose Ubuntu if unsure - most popular and beginner-friendly
+First launch will take a minute to set up
+Username can be different from Windows username
+-->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Ubuntu 
+
+<!-- end_slide -->
+
+# What is Ubuntu?
+
+<!-- pause -->
+
+**Ubuntu = A Linux Distribution**
+
+<!-- pause -->
+
+**What's a Distribution?**
+* Linux kernel + pre-selected software packages
+* Ready-to-use operating system
+* Different distros for different needs
+
+<!-- pause -->
+
+**Why Ubuntu?**
+<!-- incremental_lists: true -->
+* Most popular Linux distro
+* Beginner-friendly
+* Great documentation
+* Huge community support
+* Industry standard
+* Free and open source
+
+<!-- pause -->
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
+# Terminal & Shell 💻
+
+<!-- end_slide -->
+
+# Terminal vs Shell
+
+<!-- pause -->
+
+**Terminal** = The window (app you see)
+* GNOME Terminal, iTerm2, Windows Terminal
+* Just displays input/output
+
+<!-- pause -->
+
+**Shell** = The interpreter (runs inside terminal)
+* bash, zsh, fish
+* Translates your commands for the kernel
+
+
+
+# Let's Dive In! 
+
+<!-- pause -->
+
+**Next Up:**
+* Navigate the file system
+* Learn essential commands
 
 <!-- end_slide -->
