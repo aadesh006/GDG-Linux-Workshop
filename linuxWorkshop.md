@@ -498,6 +498,7 @@ Username can be different from Windows username
 <!-- end_slide -->
 
 
+
 # Linux Fundamentals
 ```
    __    _                    ____            _          
@@ -511,10 +512,9 @@ Username can be different from Windows username
 * Understanding the Linux filesystem
 * Navigating directories
 * Working with files and directories
-* Viewing and manipulating file content
-* Searching and finding files
-* Understanding permissions
-* Process management basics
+* Viewing file content
+* System and user information
+* Command-line tips and best practices
 
 <!-- end_slide -->
 
@@ -1177,550 +1177,6 @@ rm file1.txt file2.txt
 
 <!-- end_slide -->
 
-# Part 5: Searching and Finding
-
-## grep - Search Text Patterns
-
-**The search powerhouse:**
-
-```bash +exec
-#!/bin/bash
-
-# Create demo file
-cat > server.log << 'EOF'
-2024-01-28 10:00:00 INFO Server started
-2024-01-28 10:01:15 ERROR Connection failed
-2024-01-28 10:02:30 INFO Request processed
-2024-01-28 10:03:45 ERROR Database timeout
-2024-01-28 10:04:00 INFO User logged in
-2024-01-28 10:05:00 WARNING High memory usage
-EOF
-
-echo "=== Find ERROR lines ==="
-grep "ERROR" server.log
-
-echo -e "\n=== Case-insensitive search ==="
-grep -i "error" server.log
-
-echo -e "\n=== Count matches ==="
-grep -c "ERROR" server.log
-
-echo -e "\n=== Show line numbers ==="
-grep -n "ERROR" server.log
-
-# Cleanup
-rm server.log
-```
-
-<!-- end_slide -->
-
-## grep - Advanced Options
-
-```bash +exec
-#!/bin/bash
-
-# Create demo files
-cat > file1.txt << 'EOF'
-apple
-banana
-cherry
-EOF
-
-cat > file2.txt << 'EOF'
-banana
-date
-elderberry
-EOF
-
-# Search multiple files
-echo "=== Search in multiple files ==="
-grep "banana" file1.txt file2.txt
-
-# Invert match (lines NOT matching)
-echo -e "\n=== Lines WITHOUT 'a' ==="
-grep -v "a" file1.txt
-
-# Recursive search in directory
-mkdir demo_dir
-cp file1.txt demo_dir/
-echo -e "\n=== Recursive search ==="
-grep -r "apple" demo_dir
-
-# Show only filenames
-echo -e "\n=== Files containing 'banana' ==="
-grep -l "banana" *.txt
-
-# Cleanup
-rm file1.txt file2.txt
-rm -rf demo_dir
-```
-
-<!-- end_slide -->
-
-## grep - Regular Expressions
-
-**Pattern matching power:**
-
-```bash +exec
-#!/bin/bash
-
-cat > emails.txt << 'EOF'
-Contact: john@example.com
-Email: invalid-email
-Support: support@company.org
-Info: info@test.co.uk
-EOF
-
-# Basic regex: lines starting with 'Contact'
-echo "=== Lines starting with 'Contact' ==="
-grep "^Contact" emails.txt
-
-# Lines ending with '.com'
-echo -e "\n=== Lines ending with '.com' ==="
-grep "\.com$" emails.txt
-
-# Email pattern (simple)
-echo -e "\n=== Email-like patterns ==="
-grep -E "[a-z]+@[a-z]+\.[a-z]+" emails.txt
-
-# Extended regex
-echo -e "\n=== Using extended regex ==="
-grep -E "^(Contact|Email):" emails.txt
-
-rm emails.txt
-```
-
-**Common patterns:**
-* `^` → Start of line
-* `$` → End of line
-* `.` → Any character
-* `*` → Zero or more
-* `[abc]` → Any of a, b, or c
-
-<!-- end_slide -->
-
-## find - Locate Files and Directories
-
-**Search by name:**
-
-```bash +exec
-#!/bin/bash
-
-# Create demo structure
-mkdir -p findtest/{dir1,dir2,dir3}
-touch findtest/file1.txt
-touch findtest/dir1/data.csv
-touch findtest/dir2/script.sh
-touch findtest/dir3/README.md
-
-cd findtest
-
-# Find all .txt files
-echo "=== Find .txt files ==="
-find . -name "*.txt"
-
-# Find case-insensitive
-echo -e "\n=== Case-insensitive search ==="
-find . -iname "readme.md"
-
-# Find directories only
-echo -e "\n=== Find directories ==="
-find . -type d
-
-# Find files only
-echo -e "\n=== Find files ==="
-find . -type f
-
-# Cleanup
-cd ..
-rm -rf findtest
-```
-
-<!-- end_slide -->
-
-## find - Advanced Searches
-
-```bash +exec
-#!/bin/bash
-
-mkdir findtest
-cd findtest
-
-# Create files with different sizes and times
-echo "small" > small.txt
-echo "This is a larger file with more content" > large.txt
-touch -t 202401010000 old.txt
-touch new.txt
-
-# Find by size
-echo "=== Files larger than 10 bytes ==="
-find . -type f -size +10c
-
-# Find by modification time
-echo -e "\n=== Files modified in last 1 day ==="
-find . -type f -mtime -1
-
-# Find and execute command
-echo -e "\n=== Find and show details ==="
-find . -type f -name "*.txt" -exec ls -lh {} \;
-
-# Find empty files
-touch empty.txt
-echo -e "\n=== Empty files ==="
-find . -type f -empty
-
-# Cleanup
-cd ..
-rm -rf findtest
-```
-
-<!-- end_slide -->
-
-## find - Practical Examples
-
-**Real-world scenarios:**
-
-```bash
-# Find and delete old log files (older than 30 days)
-find /var/log -name "*.log" -mtime +30 -delete
-
-# Find large files (>100MB)
-find /home -type f -size +100M
-
-# Find files modified in last hour
-find . -mmin -60
-
-# Find files by permission
-find . -type f -perm 0644
-
-# Find and compress
-find . -name "*.log" -exec gzip {} \;
-
-# Find world-writable files (security check)
-find /home -type f -perm -002
-
-# Count files in directory tree
-find . -type f | wc -l
-```
-
-<!-- end_slide -->
-
-# Part 7: Text Processing
-
-## sort - Sort Lines
-
-```bash +exec
-#!/bin/bash
-
-cat > unsorted.txt << 'EOF'
-banana
-apple
-cherry
-date
-apple
-EOF
-
-echo "=== Alphabetical sort ==="
-sort unsorted.txt
-
-echo -e "\n=== Reverse sort ==="
-sort -r unsorted.txt
-
-echo -e "\n=== Remove duplicates ==="
-sort -u unsorted.txt
-
-# Numeric sort
-cat > numbers.txt << 'EOF'
-100
-20
-3
-45
-EOF
-
-echo -e "\n=== Numeric sort ==="
-sort -n numbers.txt
-
-rm unsorted.txt numbers.txt
-```
-
-<!-- end_slide -->
-
-## uniq - Remove Duplicates
-
-**Must be sorted first!**
-
-```bash +exec
-#!/bin/bash
-
-cat > duplicates.txt << 'EOF'
-apple
-apple
-banana
-banana
-banana
-cherry
-date
-date
-EOF
-
-echo "=== Remove consecutive duplicates ==="
-uniq duplicates.txt
-
-echo -e "\n=== Count occurrences ==="
-uniq -c duplicates.txt
-
-echo -e "\n=== Show only duplicates ==="
-uniq -d duplicates.txt
-
-echo -e "\n=== Show only unique lines ==="
-uniq -u duplicates.txt
-
-echo -e "\n=== Proper usage with sort ==="
-sort duplicates.txt | uniq -c
-
-rm duplicates.txt
-```
-
-<!-- end_slide -->
-
-## cut - Extract Columns
-
-```bash +exec
-#!/bin/bash
-
-cat > data.csv << 'EOF'
-Name,Age,City
-John,25,NYC
-Jane,30,LA
-Bob,35,Chicago
-EOF
-
-echo "=== Extract first column (comma delimiter) ==="
-cut -d',' -f1 data.csv
-
-echo -e "\n=== Extract age (2nd column) ==="
-cut -d',' -f2 data.csv
-
-echo -e "\n=== Extract multiple columns ==="
-cut -d',' -f1,3 data.csv
-
-# Character-based cut
-echo -e "\n=== First 4 characters ==="
-cut -c1-4 data.csv
-
-rm data.csv
-```
-
-**Common delimiters:**
-* `,` → CSV files
-* `:` → /etc/passwd
-* `\t` → Tab-separated
-
-<!-- end_slide -->
-
-## tr - Translate Characters
-
-```bash +exec
-#!/bin/bash
-
-echo "=== Lowercase to uppercase ==="
-echo "hello world" | tr 'a-z' 'A-Z'
-
-echo -e "\n=== Uppercase to lowercase ==="
-echo "HELLO WORLD" | tr 'A-Z' 'a-z'
-
-echo -e "\n=== Delete characters ==="
-echo "Hello123World456" | tr -d '0-9'
-
-echo -e "\n=== Replace spaces with underscores ==="
-echo "hello world linux" | tr ' ' '_'
-
-echo -e "\n=== Squeeze repeated characters ==="
-echo "hellooooo    world" | tr -s 'o '
-
-echo -e "\n=== Remove newlines ==="
-echo -e "line1\nline2\nline3" | tr -d '\n'
-echo ""
-```
-
-<!-- end_slide -->
-
-# Part 8: Pipes and Redirection
-
-## The Power of Pipes
-
-**Pipe `|` - Connect commands:**
-
-```bash +exec
-#!/bin/bash
-
-# Create sample data
-cat > users.txt << 'EOF'
-alice
-bob
-charlie
-alice
-david
-bob
-alice
-EOF
-
-echo "=== Sort and remove duplicates ==="
-cat users.txt | sort | uniq
-
-echo -e "\n=== Count unique users ==="
-cat users.txt | sort | uniq | wc -l
-
-echo -e "\n=== Find and count ==="
-cat users.txt | grep 'a' | wc -l
-
-echo -e "\n=== Complex pipeline ==="
-cat users.txt | sort | uniq -c | sort -rn
-
-rm users.txt
-```
-
-**Pipeline concept:** Output of one → Input of next
-
-<!-- end_slide -->
-
-## Redirection Operators
-
-**Standard streams:**
-
-```bash +exec
-#!/bin/bash
-
-# STDOUT redirect (>)
-echo "=== Redirect output to file ==="
-echo "Hello World" > output.txt
-cat output.txt
-
-# Append (>>)
-echo -e "\n=== Append to file ==="
-echo "Second line" >> output.txt
-cat output.txt
-
-# STDERR redirect (2>)
-echo -e "\n=== Redirect errors ==="
-ls /nonexistent 2> errors.txt
-cat errors.txt
-
-# Both STDOUT and STDERR
-echo -e "\n=== Redirect both ==="
-ls /home /nonexistent > combined.txt 2>&1
-cat combined.txt
-
-# Cleanup
-rm output.txt errors.txt combined.txt
-```
-
-<!-- end_slide -->
-
-## Input Redirection
-
-```bash +exec
-#!/bin/bash
-
-# Create input file
-cat > input.txt << 'EOF'
-apple
-banana
-cherry
-EOF
-
-# Read from file
-echo "=== Using < to read file ==="
-while IFS= read -r line; do
-    echo "Fruit: $line"
-done < input.txt
-
-# Here document
-echo -e "\n=== Here document ==="
-cat << 'EOF'
-This is a
-multi-line
-input
-EOF
-
-# Here string
-echo -e "\n=== Here string ==="
-tr 'a-z' 'A-Z' <<< "hello world"
-
-rm input.txt
-```
-
-<!-- end_slide -->
-
-## Practical Pipeline Examples
-
-**Real-world command combinations:**
-
-```bash +exec
-#!/bin/bash
-
-# Create sample log file
-cat > access.log << 'EOF'
-192.168.1.1 - GET /home
-192.168.1.2 - POST /login
-192.168.1.1 - GET /about
-192.168.1.3 - GET /home
-192.168.1.2 - GET /home
-EOF
-
-# Most frequent IP addresses
-echo "=== Top IP addresses ==="
-cut -d' ' -f1 access.log | sort | uniq -c | sort -rn
-
-# Count unique IPs
-echo -e "\n=== Unique IPs count ==="
-cut -d' ' -f1 access.log | sort | uniq | wc -l
-
-# Find specific pattern and count
-echo -e "\n=== GET requests count ==="
-grep "GET" access.log | wc -l
-
-rm access.log
-```
-
-<!-- end_slide -->
-
-# Part 9: System Information
-
-## Disk Usage Commands
-
-**df - Disk Free:**
-
-```bash +exec
-echo "=== Filesystem usage ==="
-df -h | head -5
-
-echo -e "\n=== Human-readable, specific filesystem ==="
-df -h / | tail -1
-```
-
-**du - Disk Usage:**
-
-```bash +exec
-#!/bin/bash
-
-mkdir -p demo/dir1/dir2
-echo "content" > demo/file1.txt
-echo "more content" > demo/dir1/file2.txt
-
-echo "=== Directory sizes ==="
-du -h demo
-
-echo -e "\n=== Summary only ==="
-du -sh demo
-
-echo -e "\n=== Sort by size ==="
-du -h demo | sort -h
-
-rm -rf demo
-```
-
-<!-- end_slide -->
 
 ## File and System Info
 
@@ -1785,7 +1241,7 @@ free -h
 
 <!-- end_slide -->
 
-# Part 10: Advanced Tips
+# Part 5: Advanced Tips
 
 ## Command History
 
@@ -1914,105 +1370,6 @@ echo $HO<TAB> → echo $HOME
 
 <!-- end_slide -->
 
-## Aliases - Create Shortcuts
-
-**Make your own commands:**
-
-```bash
-# Temporary aliases (current session)
-alias ll='ls -la'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias update='sudo apt update && sudo apt upgrade'
-alias gs='git status'
-alias gc='git commit'
-
-# See all aliases
-alias
-
-# Remove alias
-unalias ll
-```
-
-**Permanent aliases:**
-Add to `~/.bashrc` or `~/.bash_aliases`:
-
-```bash
-# Custom aliases
-alias please='sudo'
-alias ports='netstat -tulanp'
-alias meminfo='free -h'
-alias cpuinfo='lscpu'
-```
-
-Then run: `source ~/.bashrc`
-
-<!-- end_slide -->
-
-## Command Chaining
-
-**Run multiple commands:**
-
-```bash +exec
-#!/bin/bash
-
-# Sequential (;) - runs regardless
-echo "Command 1" ; echo "Command 2" ; echo "Command 3"
-
-# AND (&&) - runs only if previous succeeds
-mkdir testdir && cd testdir && echo "Success!"
-cd .. && rm -rf testdir
-
-# OR (||) - runs only if previous fails
-ls /nonexistent 2>/dev/null || echo "Directory not found"
-```
-
-**Background execution:**
-```bash
-# Run in background
-sleep 10 &
-
-# Multiple background jobs
-command1 & command2 & command3 &
-
-# Wait for all background jobs
-wait
-```
-
-<!-- end_slide -->
-
-## Environment Variables
-
-**Viewing and setting:**
-
-```bash +exec
-# View specific variable
-echo $HOME
-echo $PATH
-echo $USER
-
-# View all environment variables
-# env
-# printenv
-
-# Set temporary variable
-MY_VAR="Hello"
-echo $MY_VAR
-
-# Export for child processes
-export MY_VAR="World"
-```
-
-**Important variables:**
-* `$HOME` → Your home directory
-* `$PATH` → Where to find commands
-* `$PWD` → Current directory
-* `$OLDPWD` → Previous directory
-* `$USER` → Your username
-* `$SHELL` → Your default shell
-
-<!-- end_slide -->
-
 ## man - Manual Pages
 
 **The best documentation:**
@@ -2086,7 +1443,7 @@ ls --help 2>&1 | head -5
 
 <!-- end_slide -->
 
-# Part 11: Best Practices
+# Part 6: Best Practices
 
 ## Command-Line Best Practices
 
@@ -2154,21 +1511,14 @@ history | grep docker
 !!  # Run last command
 ```
 
-**2. Create aliases for common tasks:**
-```bash
-alias ll='ls -la'
-alias gs='git status'
-alias ..='cd ..'
-```
+**2. Use tab completion extensively**
 
-**3. Use tab completion extensively**
-
-**4. Learn keyboard shortcuts:**
+**3. Learn keyboard shortcuts:**
 * `Ctrl+R` - Search history
 * `Ctrl+A/E` - Start/end of line
 * `Ctrl+U/K` - Delete line
 
-**5. Combine commands:**
+**4. Combine commands:**
 ```bash
 mkdir project && cd project && touch README.md
 ```
@@ -2183,18 +1533,6 @@ mkdir project && cd project && touch README.md
 ```bash
 script.sh  # Won't work
 ./script.sh  # Correct
-```
-
-❌ **Forgetting permissions**
-```bash
-./script.sh  # Permission denied
-chmod +x script.sh && ./script.sh  # Correct
-```
-
-❌ **Mixing up redirection**
-```bash
-command > file 2>1  # Wrong (creates file named '1')
-command > file 2>&1  # Correct
 ```
 
 ❌ **Not quoting file names with spaces**
@@ -2238,14 +1576,9 @@ cat "My File.txt"  # Correct
 |----------|----------|
 | **Navigation** | `pwd`, `cd`, `ls` |
 | **Files** | `touch`, `cp`, `mv`, `rm`, `mkdir` |
-| **Viewing** | `cat`, `less`, `head`, `tail` |
-| **Search** | `grep`, `find`, `locate` |
-| **Process** | `ps`, `top`, `kill`, `jobs` |
-| **Permissions** | `chmod`, `chown`, `ls -l` |
-| **Text** | `wc`, `sort`, `uniq`, `cut`, `tr` |
-| **System** | `df`, `du`, `free`, `uname` |
-| **Help** | `man`, `--help`, `whatis` |
-| **Network** | `ping`, `curl`, `wget`, `ssh` |
+| **Viewing** | `cat`, `less`, `head`, `tail`, `wc` |
+| **System** | `uname`, `whoami`, `uptime`, `free` |
+| **Help** | `man`, `--help`, `whatis`, `type` |
 
 <!-- end_slide -->
 
@@ -2278,13 +1611,11 @@ cat "My File.txt"  # Correct
 ## What We Covered Today
 
 ✅ **Linux filesystem structure**
-✅ **Navigation and file management**
-✅ **Viewing and editing files**
-✅ **Searching and finding**
-✅ **Permissions and ownership**
-✅ **Text processing**
-✅ **Pipes and redirection**
-✅ **Real-world examples**
+✅ **Navigation commands (pwd, cd, ls)**
+✅ **File management (cp, mv, rm, mkdir)**
+✅ **Viewing files (cat, less, head, tail, wc)**
+✅ **System info and help (uname, man)**
+✅ **CLI tips and best practices**
 
 **Next steps:**
 * Practice daily
@@ -2295,6 +1626,10 @@ cat "My File.txt"  # Correct
 
 <!-- end_slide -->
 
+---
+title: Mastering the Linux CLI
+author: Aditya Gaur | GDG
+---
 
 # Mastering the Linux CLI
 
@@ -2314,11 +1649,11 @@ Permissions, streams, pipes, packages and your first script — the foundations 
 
 **Core:**
 1. Everything is a File
-2. Permissions & chmod
+2. Permissions & Ownership
 3. Shebang
-4. Streams & Redirection
-5. Pipes
-6. grep & Text Tools
+4. Text Tools (sort, uniq, tr)
+5. Pipes & Redirection
+6. grep & find
 
 <!-- pause -->
 
@@ -2438,21 +1773,26 @@ stat /etc/passwd
 
 # Part 3: chmod
 
-**Symbolic:** `chmod u+x file`
+**Two ways to set permissions:**
 
-**Octal:** `chmod 755 file`
+| Method | Example | Meaning |
+|--------|---------|--------|
+| **Octal** | `chmod 755 file` | Set exact permissions |
+| **Symbolic** | `chmod u+x file` | Add execute for user |
 
 <!-- pause -->
 
-| Pattern | Octal | Meaning |
-|---------|-------|---------|
-| rwxr-xr-x | 755 | Scripts |
-| rw-r--r-- | 644 | Files |
-| rw------- | 600 | Private |
+**Symbolic assignment (`=` sets exactly, removes rest):**
 
-**Also useful:**
-- `chown user file` — change owner
-- `chgrp group file` — change group
+```bash
+chmod u=rwx,g=rx,o=r file   # User:rwx, Group:rx, Others:r
+chmod u=rw,g=,o= file       # User:rw, Group:none, Others:none
+chmod a=r file              # All users: read only
+```
+
+**Key difference:**
+- `u+x` → **adds** execute (keeps existing)
+- `u=x` → **sets** execute only (removes r,w!)
 
 <!-- end_slide -->
 
@@ -2470,6 +1810,75 @@ ls -la /tmp/test.sh
 chmod 600 /tmp/test.sh
 ls -la /tmp/test.sh
 ```
+
+<!-- end_slide -->
+
+# Part 3: Ownership (chown)
+
+**Ownership ≠ Permissions**
+
+| Concept | What it controls |
+|---------|------------------|
+| **Owner** | WHO owns the file |
+| **Permissions** | WHAT they can do |
+
+<!-- pause -->
+
+**Commands:**
+```bash
+chown user file        # Change owner
+chown user:group file  # Change both
+chgrp group file       # Change group only
+chown -R user dir/     # Recursive
+```
+
+**Why it matters:** You can have `rwx` permissions but still be denied if you're not the owner!
+
+<!-- end_slide -->
+
+# Demo: Ownership
+
+```bash +exec
+#!/bin/bash
+touch /tmp/myfile.txt
+ls -la /tmp/myfile.txt
+echo "Current owner: $(stat -c '%U:%G' /tmp/myfile.txt)"
+```
+
+<!-- pause -->
+
+```bash
+# Change owner (requires sudo)
+sudo chown root:root /tmp/myfile.txt
+ls -la /tmp/myfile.txt
+```
+
+**Real-world:** Web servers need `www-data` ownership!
+
+<!-- end_slide -->
+
+# Ownership vs Permissions - The Key
+
+**Scenario:** File has `rwxrwxrwx` (777) — everyone can do anything?
+
+<!-- pause -->
+
+**Not quite!** Linux checks:
+
+1. **Are you the owner?** → Apply user permissions
+2. **In the group?** → Apply group permissions  
+3. **Neither?** → Apply others permissions
+
+<!-- pause -->
+
+**Example:**
+```
+-rwx------ root:root secret.txt
+```
+- Root can do anything (owner)
+- You (not root) → **denied** even though `rwx` exists!
+
+**Takeaway:** Ownership determines WHICH permission set applies to you.
 
 <!-- end_slide -->
 
@@ -2579,6 +1988,102 @@ command &>/dev/null
 # Empty a file
 cat /dev/null > /tmp/out.txt && echo "File emptied!"
 ```
+<!-- end_slide -->
+
+# Text Tools Cheatsheet
+
+| Tool | What |
+|------|------|
+| `head -n` | first n lines |
+| `tail -n` | last n lines |
+| `tail -f` | follow file |
+| `wc -l` | count lines |
+| `sort` | sort lines |
+| `uniq -c` | count unique |
+| `cut -d: -f1` | extract field |
+| `tr A-Z a-z` | translate |
+
+<!-- end_slide -->
+
+## sort - Order Lines
+
+**Usage:** `sort [options] file`
+
+| Flag | What |
+|------|------|
+| `-n` | numeric sort |
+| `-r` | reverse order |
+| `-u` | unique (remove duplicates) |
+| `-k2` | sort by column 2 |
+| `-t,` | use comma as delimiter |
+
+```bash +exec
+#!/bin/bash
+echo -e "banana\napple\ncherry\napple" > fruits.txt
+echo "=== Alphabetical ===" && sort fruits.txt
+echo -e "\n=== Reverse ===" && sort -r fruits.txt
+echo -e "\n=== Unique ===" && sort -u fruits.txt
+rm fruits.txt
+```
+
+<!-- end_slide -->
+
+## uniq - Filter Duplicates
+
+**Usage:** `uniq [options] file` *(input must be sorted!)*
+
+| Flag | What |
+|------|------|
+| `-c` | prefix with count |
+| `-d` | only show duplicates |
+| `-u` | only show unique |
+| `-i` | ignore case |
+
+```bash +exec
+#!/bin/bash
+echo -e "apple\napple\nbanana\nbanana\nbanana\ncherry" > sorted.txt
+echo "=== Remove duplicates ===" && uniq sorted.txt
+echo -e "\n=== Count occurrences ===" && uniq -c sorted.txt
+echo -e "\n=== Only duplicates ===" && uniq -d sorted.txt
+rm sorted.txt
+```
+
+<!-- end_slide -->
+
+## tr - Translate Characters
+
+**Usage:** `tr [options] SET1 SET2`
+
+| Flag | What |
+|------|------|
+| `-d` | delete characters |
+| `-s` | squeeze repeats |
+| `-c` | complement SET1 |
+
+```bash +exec
+#!/bin/bash
+echo "=== Lowercase to UPPERCASE ==="
+echo "hello world" | tr 'a-z' 'A-Z'
+
+echo -e "\n=== Delete digits ==="
+echo "abc123def456" | tr -d '0-9'
+
+echo -e "\n=== Squeeze spaces ==="
+echo "too    many    spaces" | tr -s ' '
+
+echo -e "\n=== Replace newlines with commas ==="
+echo -e "line1\nline2\nline3" | tr '\n' ',' && echo
+```
+
+<!-- end_slide -->
+
+# Demo: Word Frequency Pipeline
+
+```bash +exec
+echo "the quick fox jumps over the lazy fox the" > /tmp/words.txt
+cat /tmp/words.txt | tr ' ' '\n' | sort | uniq -c | sort -nr
+```
+
 
 <!-- end_slide -->
 
@@ -2642,6 +2147,7 @@ cat /etc/passwd | head -3 | cut -d: -f1 | sort
 
 <!-- end_slide -->
 
+
 # Part 7: grep
 
 **G**lobal **R**egular **E**xpression **P**rint
@@ -2658,6 +2164,49 @@ cat /etc/passwd | head -3 | cut -d: -f1 | sort
 
 <!-- end_slide -->
 
+## grep - Regular Expressions
+
+**Pattern matching power:**
+
+```bash +exec
+#!/bin/bash
+
+cat > emails.txt << 'EOF'
+Contact: john@example.com
+Email: invalid-email
+Support: support@company.org
+Info: info@test.co.uk
+EOF
+
+# Basic regex: lines starting with 'Contact'
+echo "=== Lines starting with 'Contact' ==="
+grep "^Contact" emails.txt
+
+# Lines ending with '.com'
+echo -e "\n=== Lines ending with '.com' ==="
+grep "\.com$" emails.txt
+
+# Email pattern (simple)
+echo -e "\n=== Email-like patterns ==="
+grep -E "[a-z]+@[a-z]+\.[a-z]+" emails.txt
+
+# Extended regex
+echo -e "\n=== Using extended regex ==="
+grep -E "^(Contact|Email):" emails.txt
+
+rm emails.txt
+```
+
+**Common patterns:**
+* `^` → Start of line
+* `$` → End of line
+* `.` → Any character
+* `*` → Zero or more
+* `[abc]` → Any of a, b, or c
+
+<!-- end_slide -->
+
+
 # Demo: grep
 
 ```bash +exec
@@ -2672,31 +2221,74 @@ grep -v "bash" /etc/passwd | head -5
 
 <!-- end_slide -->
 
-# Text Tools Cheatsheet
-
-| Tool | What |
-|------|------|
-| `head -n` | first n lines |
-| `tail -n` | last n lines |
-| `tail -f` | follow file |
-| `wc -l` | count lines |
-| `sort` | sort lines |
-| `uniq -c` | count unique |
-| `cut -d: -f1` | extract field |
-| `tr A-Z a-z` | translate |
-
-<!-- end_slide -->
-
-# Demo: Word Frequency Pipeline
+## find - Advanced Searches
 
 ```bash +exec
-echo "the quick fox jumps over the lazy fox the" > /tmp/words.txt
-cat /tmp/words.txt | tr ' ' '\n' | sort | uniq -c | sort -nr
+#!/bin/bash
+
+mkdir findtest
+cd findtest
+
+# Create files with different sizes and times
+echo "small" > small.txt
+echo "This is a larger file with more content" > large.txt
+touch -t 202401010000 old.txt
+touch new.txt
+
+# Find by size
+echo "=== Files larger than 10 bytes ==="
+find . -type f -size +10c
+
+# Find by modification time
+echo -e "\n=== Files modified in last 1 day ==="
+find . -type f -mtime -1
+
+# Find and execute command
+echo -e "\n=== Find and show details ==="
+find . -type f -name "*.txt" -exec ls -lh {} \;
+
+# Find empty files
+touch empty.txt
+echo -e "\n=== Empty files ==="
+find . -type f -empty
+
+# Cleanup
+cd ..
+rm -rf findtest
 ```
 
 <!-- end_slide -->
 
-# Part 7: Package Management
+## find - Practical Examples
+
+**Real-world scenarios:**
+
+```bash
+# Find and delete old log files (older than 30 days)
+find /var/log -name "*.log" -mtime +30 -delete
+
+# Find large files (>100MB)
+find /home -type f -size +100M
+
+# Find files modified in last hour
+find . -mmin -60
+
+# Find files by permission
+find . -type f -perm 0644
+
+# Find and compress
+find . -name "*.log" -exec gzip {} \;
+
+# Find world-writable files (security check)
+find /home -type f -perm -002
+
+# Count files in directory tree
+find . -type f | wc -l
+```
+
+<!-- end_slide -->
+
+# Part 8: Package Management
 
 Linux has **built-in package managers** \u2014 no need to download from random websites.
 Packages come from trusted repositories maintained by your distro.
@@ -2759,7 +2351,7 @@ echo "GDG Linux Workshop" | figlet -f small 2>/dev/null || echo "Install figlet"
 
 <!-- end_slide -->
 
-# Part 8: Aliases & .bashrc
+# Part 9: Aliases & .bashrc
 
 Aliases are **shortcuts** for commands you type often.
 Add them to `~/.bashrc` to make them permanent.
@@ -2776,7 +2368,7 @@ alias update='sudo apt update && sudo apt upgrade'
 
 <!-- end_slide -->
 
-# Part 9: Networking
+# Part 10: Networking
 
 Check connectivity and fetch data from the command line.
 
@@ -2792,7 +2384,7 @@ curl -s ifconfig.me 2>/dev/null && echo "" || echo "No curl"
 
 <!-- end_slide -->
 
-# Part 10: Disk
+# Part 11: Disk
 
 Know how much space you have and what's using it.
 
@@ -2808,7 +2400,7 @@ du -sh /tmp 2>/dev/null
 
 <!-- end_slide -->
 
-# Part 13: CLI Power Tricks
+# Part 12: CLI Power Tricks
 
 | Trick | What |
 |-------|------|
@@ -2816,7 +2408,9 @@ du -sh /tmp 2>/dev/null
 | `!!` | repeat last command |
 | `sudo !!` | run last as sudo |
 | `$?` | exit code (0=success) |
-| `which` | find command location |
+| `which` | find command in PATH |
+| `whereis` | find binary, source, man |
+| `type` | show command type |
 
 <!-- end_slide -->
 
@@ -2958,18 +2552,20 @@ cmd1 | cmd2       # pipe
 # Key Takeaways
 
 1. **Everything is a file** — fd 0, 1, 2
-2. **Permissions** — rwx × ugo
-3. **Shebang** — kernel reads it
-4. **Redirection** — `>`, `2>`, `&>`
-5. **Pipes** — `|` chains commands
-6. **Text tools** — grep, sort, uniq, cut
+2. **Permissions** — rwx × ugo (chmod)
+3. **Ownership** — chown/chgrp (who owns it)
+4. **Shebang** — kernel reads first line
+5. **Redirection** — `>`, `2>`, `&>`
+6. **Pipes** — `|` chains commands
+7. **Text tools** — grep, sort, uniq, find
+
 <!-- end_slide -->
 
 # What's Next: Shell Scripting
 
 You've already written your first script! Now imagine:
 
-⁠ bash
+```bash
 #!/bin/bash
 
 # Variables
@@ -2984,11 +2580,11 @@ fi
 for user in $(cut -d: -f1 /etc/passwd | head -3); do
     echo "Hello, $user"
 done
- ⁠
+```
 
 <!-- pause -->
 
-*Coming up next:* Variables, conditionals, loops, functions, and real automation.
+**Coming up next:** Variables, conditionals, loops, functions, and real automation.
 
 <!-- end_slide -->
 
@@ -3002,9 +2598,7 @@ done
 <!-- pause -->
 
 *"The command line is your friend."*
-
 <!-- end_slide -->
-
 
 =======
 # Shell Scripting
